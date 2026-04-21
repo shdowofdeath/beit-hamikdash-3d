@@ -1111,76 +1111,101 @@ function buildFire(parent, x, y, z, scale = 1.0) {
   return g;
 }
 
-// ─── Kiyor — with 12 Spigots ──────────────────────────────
+// ─── Kiyor — brass laver with 12 spigots ──────────────────
 function buildKiyor(parent) {
-  const kiyorGroup = new THREE.Group();
+  const g = new THREE.Group();
+  const bronzeMat = MAT.bronze();
 
-  const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 1, 1.5, 12), MAT.bronze());
-  pedestal.position.y = Y_KOHANIM + 0.75;
-  pedestal.castShadow = true;
-  kiyorGroup.add(pedestal);
+  // Tall tapered pedestal — narrow waist, broader top and bottom
+  const pedestalBot = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.65, 0.3, 12), bronzeMat);
+  pedestalBot.position.y = Y_KOHANIM + 0.15;
+  g.add(pedestalBot);
 
-  const basin = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 0.8, 1.2, 16), MAT.bronze());
-  basin.position.y = Y_KOHANIM + 2.1;
-  basin.castShadow = true;
-  kiyorGroup.add(basin);
+  const pedestalShaft = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.45, 1.4, 12), bronzeMat);
+  pedestalShaft.position.y = Y_KOHANIM + 1.0;
+  pedestalShaft.castShadow = true;
+  g.add(pedestalShaft);
 
-  const basinInner = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.35, 0.7, 1.0, 16),
-    new THREE.MeshStandardMaterial({ color: 0x1a4466, roughness: 0.3, metalness: 0.2 })
+  const pedestalTop = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.3, 0.25, 12), bronzeMat);
+  pedestalTop.position.y = Y_KOHANIM + 1.82;
+  g.add(pedestalTop);
+
+  // Wide shallow bowl — flared rim, the distinctive kiyor shape
+  const bowlOuter = new THREE.Mesh(new THREE.CylinderGeometry(1.7, 0.55, 0.75, 24), bronzeMat);
+  bowlOuter.position.y = Y_KOHANIM + 2.32;
+  bowlOuter.castShadow = true;
+  g.add(bowlOuter);
+
+  // Bowl inner (dark water cavity)
+  const bowlInner = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.52, 0.42, 0.65, 24),
+    new THREE.MeshStandardMaterial({ color: 0x0d2233, roughness: 0.4, metalness: 0.1 })
   );
-  basinInner.position.y = Y_KOHANIM + 2.15;
-  kiyorGroup.add(basinInner);
+  bowlInner.position.y = Y_KOHANIM + 2.37;
+  g.add(bowlInner);
 
-  const waterGeo = new THREE.CircleGeometry(1.3, 32);
-  const waterMat = MAT.water();
-  const water = new THREE.Mesh(waterGeo, waterMat);
+  // Water surface inside bowl
+  const water = new THREE.Mesh(
+    new THREE.CircleGeometry(1.5, 32),
+    MAT.water()
+  );
   water.rotation.x = -Math.PI / 2;
-  water.position.y = Y_KOHANIM + 2.65;
+  water.position.y = Y_KOHANIM + 2.68;
   water.userData.isWater = true;
-  kiyorGroup.add(water);
+  g.add(water);
 
+  // Ripples on water surface
   const rippleMat = new THREE.MeshStandardMaterial({
-    color: 0x88ccee, emissive: 0x224466, emissiveIntensity: 0.3,
-    transparent: true, opacity: 0.2, side: THREE.DoubleSide,
+    color: 0x88ccee, transparent: true, opacity: 0.2,
+    side: THREE.DoubleSide, depthWrite: false,
   });
   for (let i = 0; i < 3; i++) {
-    const ripple = new THREE.Mesh(new THREE.TorusGeometry(0.3 + i * 0.35, 0.02, 4, 24), rippleMat);
+    const ripple = new THREE.Mesh(new THREE.TorusGeometry(0.35 + i * 0.38, 0.02, 4, 32), rippleMat);
     ripple.rotation.x = Math.PI / 2;
-    ripple.position.y = Y_KOHANIM + 2.67;
+    ripple.position.y = Y_KOHANIM + 2.70;
     ripple.userData.isWater = true;
     ripple.userData.rippleIdx = i;
-    kiyorGroup.add(ripple);
+    g.add(ripple);
   }
 
-  const waterReflect = new THREE.PointLight(0x4488bb, 0.8, 6);
-  waterReflect.position.y = Y_KOHANIM + 3;
-  kiyorGroup.add(waterReflect);
+  // Flared decorative rim at top of bowl
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.07, 8, 32), bronzeMat);
+  rim.rotation.x = Math.PI / 2;
+  rim.position.y = Y_KOHANIM + 2.70;
+  g.add(rim);
 
-  const spigotMat = MAT.bronze();
+  // 12 spigots evenly around the bowl at mid-height, pointing outward
   for (let i = 0; i < 12; i++) {
     const angle = (i / 12) * Math.PI * 2;
-    const spigot = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.3, 6), spigotMat);
-    spigot.position.set(Math.cos(angle) * 1.4, Y_KOHANIM + 1.8, Math.sin(angle) * 1.4);
+    const r = 1.72;
+    const spigotY = Y_KOHANIM + 2.15;
+
+    // Spigot body — points outward horizontally
+    const spigot = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.06, 0.38, 6), bronzeMat);
     spigot.rotation.z = Math.PI / 2;
     spigot.rotation.y = angle;
-    kiyorGroup.add(spigot);
+    spigot.position.set(Math.cos(angle) * (r - 0.05), spigotY, Math.sin(angle) * (r - 0.05));
+    g.add(spigot);
 
-    const dropGeo = new THREE.SphereGeometry(0.03, 4, 4);
-    const dropMat = new THREE.MeshStandardMaterial({
-      color: 0x66bbdd, emissive: 0x225577, emissiveIntensity: 0.3,
-      transparent: true, opacity: 0.7,
-    });
-    const drop = new THREE.Mesh(dropGeo, dropMat);
-    drop.position.set(Math.cos(angle) * 1.55, Y_KOHANIM + 1.7, Math.sin(angle) * 1.55);
+    // Water drop below spigot
+    const drop = new THREE.Mesh(
+      new THREE.SphereGeometry(0.04, 5, 5),
+      new THREE.MeshStandardMaterial({ color: 0x66bbdd, transparent: true, opacity: 0.75, depthWrite: false })
+    );
+    drop.position.set(Math.cos(angle) * (r + 0.08), spigotY - 0.15, Math.sin(angle) * (r + 0.08));
     drop.userData.isWater = true;
     drop.userData.dropIdx = i;
-    kiyorGroup.add(drop);
+    g.add(drop);
   }
 
-  // Between altar (x≈1) and Ulam entrance (x≈-5), slightly south (z=-2.5)
-  kiyorGroup.position.set(-2.5, 0, -2.5);
-  parent.add(kiyorGroup);
+  // Water-reflection light
+  const waterLight = new THREE.PointLight(0x4499cc, 1.2, 8);
+  waterLight.position.y = Y_KOHANIM + 3.2;
+  g.add(waterLight);
+
+  // Position: between Ulam entrance (~x=-5) and altar (~x=1), south side
+  g.position.set(-2, 0, -3);
+  parent.add(g);
 }
 
 // ─── Sanctuary — Ulam + Heichal + Kodesh HaKodashim ───────
@@ -1436,162 +1461,149 @@ function buildSanctuary(parent) {
   parochetGoldBar.position.set(parochetX - 0.12, Y_ULAM + heichalH - 0.6, 0);
   sanctuary.add(parochetGoldBar);
 
+  // ── קודש הקודשים ──────────────────────────────────────────
   const kkZW = 8;
   const kkXD = 4;
   const kkH = 10;
   const kkCX = parochetX - 0.2 - kkXD / 2 - 0.1;
 
-  const kkFloor = new THREE.Mesh(new THREE.BoxGeometry(kkXD, 0.4, kkZW), MAT.marble());
-  kkFloor.position.set(kkCX, Y_ULAM, 0);
-  sanctuary.add(kkFloor);
+  // Gold-panelled walls — cedar overlaid with gold per Melachim 1:6
+  const goldWallMat = new THREE.MeshStandardMaterial({ color: 0xb8902a, roughness: 0.35, metalness: 0.75 });
 
-  const kkGlassWall = new THREE.Mesh(
-    new THREE.BoxGeometry(kkXD, kkH, 0.05), glassWallMat
-  );
-  kkGlassWall.position.set(kkCX, Y_ULAM + kkH / 2, kkZW / 2);
-  sanctuary.add(kkGlassWall);
+  // North wall (solid)
+  const kkWallN = new THREE.Mesh(new THREE.BoxGeometry(kkXD, kkH, wallT), goldWallMat);
+  kkWallN.position.set(kkCX, Y_ULAM + kkH / 2, -kkZW / 2);
+  kkWallN.castShadow = true;
+  sanctuary.add(kkWallN);
 
-  addStoneWall(sanctuary, kkXD, kkH, wallT, kkCX, Y_ULAM + kkH / 2, -kkZW / 2, 1, 2);
-  addStoneWall(sanctuary, wallT, kkH, kkZW, kkCX + kkXD / 2, Y_ULAM + kkH / 2, 0, 1, 2);
-  addStoneWall(sanctuary, wallT, kkH, kkZW, kkCX - kkXD / 2, Y_ULAM + kkH / 2, 0, 1, 2);
+  // South wall (solid)
+  const kkWallS = new THREE.Mesh(new THREE.BoxGeometry(kkXD, kkH, wallT), goldWallMat);
+  kkWallS.position.set(kkCX, Y_ULAM + kkH / 2, kkZW / 2);
+  kkWallS.castShadow = true;
+  sanctuary.add(kkWallS);
 
-  const kkRoofMat = new THREE.MeshStandardMaterial({
-    color: 0xc9a84c, metalness: 0.7, roughness: 0.3,
-    transparent: true, opacity: 0.15, side: THREE.DoubleSide,
-  });
-  const kkRoof = new THREE.Mesh(new THREE.BoxGeometry(kkXD + 1.5, 0.8, kkZW + 1.5), kkRoofMat);
-  kkRoof.position.set(kkCX, Y_ULAM + kkH + 0.4, 0);
-  sanctuary.add(kkRoof);
+  // West wall (back wall, solid)
+  const kkWallW = new THREE.Mesh(new THREE.BoxGeometry(wallT, kkH, kkZW), goldWallMat);
+  kkWallW.position.set(kkCX - kkXD / 2, Y_ULAM + kkH / 2, 0);
+  kkWallW.castShadow = true;
+  sanctuary.add(kkWallW);
+
+  // Gold ceiling
+  const kkCeiling = new THREE.Mesh(new THREE.BoxGeometry(kkXD, 0.3, kkZW), goldWallMat);
+  kkCeiling.position.set(kkCX, Y_ULAM + kkH, 0);
+  sanctuary.add(kkCeiling);
+
+  // Gold roof edge crown
   const kkRoofEdge = new THREE.Mesh(
-    new THREE.BoxGeometry(kkXD + 1.7, 0.15, kkZW + 1.7), MAT.gold()
+    new THREE.BoxGeometry(kkXD + 1.2, 0.18, kkZW + 1.2), MAT.gold()
   );
-  kkRoofEdge.position.set(kkCX, Y_ULAM + kkH + 0.85, 0);
+  kkRoofEdge.position.set(kkCX, Y_ULAM + kkH + 0.09, 0);
   sanctuary.add(kkRoofEdge);
 
-  // Even Shtiyah — Foundation Stone (protruding 3 fingerbreadths)
-  const evenShtiyah = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.2, 1.4, 0.35, 12),
-    new THREE.MeshStandardMaterial({ color: 0x9a8a7a, roughness: 0.85, metalness: 0.05 })
+  // Marble floor — slightly raised, polished white
+  const kkFloor = new THREE.Mesh(
+    new THREE.BoxGeometry(kkXD - wallT, 0.25, kkZW - wallT),
+    new THREE.MeshStandardMaterial({ color: 0xf2ede4, roughness: 0.25, metalness: 0.05 })
   );
-  evenShtiyah.position.set(kkCX, Y_ULAM + 0.38, 0);
+  kkFloor.position.set(kkCX, Y_ULAM + 0.13, 0);
+  kkFloor.receiveShadow = true;
+  sanctuary.add(kkFloor);
+
+  // Even Shtiyah — Foundation Stone, raised slightly from floor
+  const evenShtiyah = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.9, 1.05, 0.18, 16),
+    new THREE.MeshStandardMaterial({ color: 0x8a7a6a, roughness: 0.9, metalness: 0.0 })
+  );
+  evenShtiyah.position.set(kkCX, Y_ULAM + 0.34, 0);
   evenShtiyah.castShadow = true;
-  evenShtiyah.receiveShadow = true;
   sanctuary.add(evenShtiyah);
 
+  // Gold ring around Even Shtiyah
   const evenRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.35, 0.08, 8, 24),
+    new THREE.TorusGeometry(1.1, 0.06, 8, 32),
     MAT.goldBright()
   );
-  evenRing.position.set(kkCX, Y_ULAM + 0.58, 0);
   evenRing.rotation.x = Math.PI / 2;
+  evenRing.position.set(kkCX, Y_ULAM + 0.44, 0);
   sanctuary.add(evenRing);
 
-  // Aron HaKodesh outline — shown as faint/transparent to indicate the Ark was hidden
-  // (Second Temple had no Ark; we show its historical position as a reverent memorial)
+  // Aron HaKodesh — shown as a ghostly gold outline (Second Temple had no Ark)
+  // Proportions: 2.5×1.5×1.5 cubits per Shemot 25:10
   const aronMat = new THREE.MeshStandardMaterial({
-    color: 0xc9a84c, roughness: 0.4, metalness: 0.6,
-    transparent: true, opacity: 0.35, side: THREE.DoubleSide,
+    color: 0xd4a830, roughness: 0.3, metalness: 0.8,
+    transparent: true, opacity: 0.55, depthWrite: false,
   });
-  const aronBody = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.75, 0.75), aronMat);
-  aronBody.position.set(kkCX, Y_ULAM + 1.1, 0);
+  const aronBody = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.1, 1.1), aronMat);
+  aronBody.position.set(kkCX, Y_ULAM + 1.35, 0);
   sanctuary.add(aronBody);
 
-  // Kapporet (mercy seat) on top
-  const kapporet = new THREE.Mesh(new THREE.BoxGeometry(1.35, 0.08, 0.85), aronMat);
-  kapporet.position.set(kkCX, Y_ULAM + 1.52, 0);
+  // Kapporet (mercy seat) — flat golden slab on top
+  const kapporetMat = new THREE.MeshStandardMaterial({ color: 0xe8d060, roughness: 0.2, metalness: 0.9 });
+  const kapporet = new THREE.Mesh(new THREE.BoxGeometry(1.95, 0.1, 1.25), kapporetMat);
+  kapporet.position.set(kkCX, Y_ULAM + 1.96, 0);
   sanctuary.add(kapporet);
 
-  // Two Cherubim — stylized wing shapes flanking the mercy seat
+  // Two Keruvim — facing each other, wings spread upward over the Kapporet
   [-1, 1].forEach(side => {
-    const cherubBody = new THREE.Mesh(
-      new THREE.SphereGeometry(0.18, 8, 6),
-      new THREE.MeshStandardMaterial({ color: 0xc9a84c, roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.5 })
-    );
-    cherubBody.position.set(kkCX + side * 0.45, Y_ULAM + 1.8, 0);
-    sanctuary.add(cherubBody);
+    const cherubMat = new THREE.MeshStandardMaterial({ color: 0xd4a830, roughness: 0.3, metalness: 0.85 });
 
-    // Wings spread inward over the mercy seat
-    const wingGeo = new THREE.BoxGeometry(0.5, 0.05, 0.4);
-    const wingMat = new THREE.MeshStandardMaterial({ color: 0xe8d48b, roughness: 0.3, metalness: 0.8, transparent: true, opacity: 0.45 });
-    const wingInner = new THREE.Mesh(wingGeo, wingMat);
-    wingInner.position.set(kkCX + side * 0.2, Y_ULAM + 2.0, 0);
-    wingInner.rotation.z = side * -0.4;
-    sanctuary.add(wingInner);
-    const wingOuter = new THREE.Mesh(wingGeo, wingMat);
-    wingOuter.position.set(kkCX + side * 0.65, Y_ULAM + 2.0, 0);
-    wingOuter.rotation.z = side * 0.5;
-    sanctuary.add(wingOuter);
+    // Body
+    const body = new THREE.Mesh(new THREE.SphereGeometry(0.22, 10, 8), cherubMat);
+    body.position.set(kkCX + side * 0.62, Y_ULAM + 2.28, 0);
+    sanctuary.add(body);
+
+    // Upper wings — spread inward and upward
+    const wingUp = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.06, 0.5), cherubMat);
+    wingUp.position.set(kkCX + side * 0.28, Y_ULAM + 2.6, 0);
+    wingUp.rotation.z = side * -0.55;
+    sanctuary.add(wingUp);
+
+    // Outer wings — spread outward
+    const wingOut = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.06, 0.5), cherubMat);
+    wingOut.position.set(kkCX + side * 0.96, Y_ULAM + 2.6, 0);
+    wingOut.rotation.z = side * 0.55;
+    sanctuary.add(wingOut);
   });
 
-  const kkLight = new THREE.PointLight(0xfff8e0, 4.0, 20);
-  kkLight.position.set(kkCX, Y_ULAM + 5, 0);
+  // Strong warm interior light — the divine presence (שכינה)
+  const kkLight = new THREE.PointLight(0xfff5d0, 5.0, 18);
+  kkLight.position.set(kkCX, Y_ULAM + 6, 0);
   sanctuary.add(kkLight);
-  const kkGlow = new THREE.PointLight(0xffeebb, 3.0, 15);
-  kkGlow.position.set(kkCX, Y_ULAM + 2, 0);
-  sanctuary.add(kkGlow);
-  const kkFloorLight = new THREE.PointLight(0xffffcc, 2.0, 10);
-  kkFloorLight.position.set(kkCX, Y_ULAM + 0.8, 0);
-  sanctuary.add(kkFloorLight);
-
-  const glowSphere = new THREE.Mesh(
-    new THREE.SphereGeometry(0.6, 16, 16),
-    new THREE.MeshStandardMaterial({
-      color: 0xffffee, emissive: 0xffddaa, emissiveIntensity: 1.0,
-      transparent: true, opacity: 0.3
-    })
-  );
-  glowSphere.position.set(kkCX, Y_ULAM + 2.5, 0);
-  sanctuary.add(glowSphere);
-
-  const glowPillar = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.15, 0.15, 4, 8),
-    new THREE.MeshStandardMaterial({
-      color: 0xffeedd, emissive: 0xffcc88, emissiveIntensity: 0.5,
-      transparent: true, opacity: 0.15
-    })
-  );
-  glowPillar.position.set(kkCX, Y_ULAM + 3, 0);
-  sanctuary.add(glowPillar);
-
-  [{ x: kkCX + 1.2, z: 1.2 }, { x: kkCX + 1.2, z: -1.2 },
-   { x: kkCX - 1.2, z: 1.2 }, { x: kkCX - 1.2, z: -1.2 }].forEach(pos => {
-    const torch = new THREE.PointLight(0xffcc44, 0.8, 6);
-    torch.position.set(pos.x, Y_ULAM + 5, pos.z);
-    sanctuary.add(torch);
-  });
+  // Low fill light to illuminate the Aron
+  const aronLight = new THREE.PointLight(0xffe8a0, 4.0, 10);
+  aronLight.position.set(kkCX, Y_ULAM + 2.5, 0);
+  sanctuary.add(aronLight);
 
   parent.add(sanctuary);
 }
 
-// ─── Menorah ────────────────────────────────────────────────
+// ─── Menorah — Rambam design (straight vertical branches) ───
+// Per Rambam's own sketch: 6 branches exit the stem horizontally
+// then rise straight up, all tips at the same height as the central stem.
 function buildMenorah(parent, x, y, z) {
   const g = new THREE.Group();
   const mat = MAT.goldBright();
 
-  // Tripod base (3 legs) — per iconographic tradition
-  const legAngles = [0, Math.PI * 2 / 3, Math.PI * 4 / 3];
-  legAngles.forEach(angle => {
-    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.07, 0.55, 6), mat);
-    leg.position.set(Math.sin(angle) * 0.38, 0.28, Math.cos(angle) * 0.38);
-    leg.rotation.z = Math.sin(angle) * 0.28;
-    leg.rotation.x = Math.cos(angle) * 0.28;
-    g.add(leg);
-  });
+  // Base — wide hexagonal foot per Rambam
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 0.18, 6), mat);
+  base.position.y = 0.09;
+  g.add(base);
 
-  // Base disc
-  const baseDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.58, 0.12, 10), mat);
-  baseDisc.position.y = 0.06;
-  g.add(baseDisc);
+  // Short pedestal neck
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.28, 0.32, 8), mat);
+  neck.position.y = 0.34;
+  g.add(neck);
 
-  // Central stem — 3.5 units tall
-  const stemH = 3.5;
-  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, stemH, 8), mat);
-  stem.position.y = stemH / 2 + 0.12;
+  const STEM_H = 3.6;   // height of central stem above base
+  const FLAME_Y = STEM_H + 0.18; // all 7 flames at this height
+  const R = 0.07;       // branch radius
+
+  // Central stem with 3 knobs
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(R, R, STEM_H, 8), mat);
+  stem.position.y = STEM_H / 2 + 0.5;
   g.add(stem);
 
-  // Knobs on central stem at 3 levels
-  const FLAME_Y = 3.85; // all flames at same height
-  [1.1, 1.9, 2.7].forEach(ky => {
+  [1.2, 2.0, 2.8].forEach(ky => {
     const knob = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 6), mat);
     knob.position.y = ky;
     g.add(knob);
@@ -1607,17 +1619,16 @@ function buildMenorah(parent, x, y, z) {
   });
 
   function addFlame(fx, fy, fz) {
-    // Oil cup at tip
     const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.1, 8), mat);
-    cup.position.set(fx, fy - 0.07, fz);
+    cup.position.set(fx, fy - 0.06, fz);
     g.add(cup);
-    const flameCore = new THREE.Mesh(new THREE.ConeGeometry(0.055, 0.32, 6), flameCoreMat);
-    flameCore.position.set(fx, fy + 0.14, fz);
+    const flameCore = new THREE.Mesh(new THREE.ConeGeometry(0.055, 0.30, 6), flameCoreMat);
+    flameCore.position.set(fx, fy + 0.13, fz);
     flameCore.userData.isFlame = true;
     flameCore.userData.flameLayer = 'core';
     g.add(flameCore);
-    const flameOuter = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.22, 6), flameOuterMat);
-    flameOuter.position.set(fx, fy + 0.09, fz);
+    const flameOuter = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.20, 6), flameOuterMat);
+    flameOuter.position.set(fx, fy + 0.08, fz);
     flameOuter.userData.isFlame = true;
     flameOuter.userData.flameLayer = 'outer';
     g.add(flameOuter);
@@ -1626,47 +1637,43 @@ function buildMenorah(parent, x, y, z) {
   // Central flame
   addFlame(0, FLAME_Y, 0);
 
-  // 6 side branches — curved arcs using TubeGeometry
-  // Each branch exits stem at a certain height, arcs outward, then rises to FLAME_Y
-  const branchDefs = [
-    { side: -1, i: 1, exitY: 1.3, midX: -0.55, midY: 1.6, tipX: -0.72 },
-    { side: -1, i: 2, exitY: 1.9, midX: -1.0,  midY: 2.1, tipX: -1.32 },
-    { side: -1, i: 3, exitY: 2.5, midX: -1.45, midY: 2.55, tipX: -1.92 },
-    { side:  1, i: 1, exitY: 1.3, midX:  0.55, midY: 1.6, tipX:  0.72 },
-    { side:  1, i: 2, exitY: 1.9, midX:  1.0,  midY: 2.1, tipX:  1.32 },
-    { side:  1, i: 3, exitY: 2.5, midX:  1.45, midY: 2.55, tipX:  1.92 },
+  // 6 branches: 3 per side, Rambam style — horizontal arm then vertical rise
+  // exitY = where the horizontal arm leaves the stem
+  // tipX  = how far out the branch stands
+  const branches = [
+    { side: -1, exitY: 1.1, tipX: -0.65 },
+    { side: -1, exitY: 1.7, tipX: -1.25 },
+    { side: -1, exitY: 2.3, tipX: -1.85 },
+    { side:  1, exitY: 1.1, tipX:  0.65 },
+    { side:  1, exitY: 1.7, tipX:  1.25 },
+    { side:  1, exitY: 2.3, tipX:  1.85 },
   ];
 
-  branchDefs.forEach(({ exitY, midX, midY, tipX }) => {
-    // Curved tube for the branch
-    const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0,    exitY,    0),
-      new THREE.Vector3(midX * 0.5, (exitY + midY) / 2, 0),
-      new THREE.Vector3(midX, midY,    0),
-      new THREE.Vector3(tipX * 0.95, FLAME_Y - 0.35, 0),
-      new THREE.Vector3(tipX, FLAME_Y - 0.05, 0),
-    ]);
-    const tube = new THREE.Mesh(
-      new THREE.TubeGeometry(curve, 16, 0.055, 6, false),
-      mat
-    );
-    g.add(tube);
+  branches.forEach(({ exitY, tipX }) => {
+    // Horizontal arm from stem to branch position
+    const armLen = Math.abs(tipX);
+    const arm = new THREE.Mesh(new THREE.CylinderGeometry(R, R, armLen, 6), mat);
+    arm.rotation.z = Math.PI / 2;
+    arm.position.set(tipX / 2, exitY, 0);
+    g.add(arm);
 
-    // Knob at mid-arc
-    const knob = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6, 6), mat);
-    knob.position.set(midX * 0.7, midY - 0.1, 0);
+    // Knob at the elbow (junction of horizontal + vertical)
+    const knob = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 6), mat);
+    knob.position.set(tipX, exitY, 0);
     g.add(knob);
 
-    // Cup/flower at tip
-    const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.06, 0.14, 8), mat);
-    bowl.position.set(tipX, FLAME_Y - 0.1, 0);
-    g.add(bowl);
+    // Vertical rise from exitY up to FLAME_Y
+    const riseH = FLAME_Y - exitY;
+    const rise = new THREE.Mesh(new THREE.CylinderGeometry(R, R, riseH, 6), mat);
+    rise.position.set(tipX, exitY + riseH / 2, 0);
+    g.add(rise);
 
+    // Oil cup and flame at top
     addFlame(tipX, FLAME_Y, 0);
   });
 
   const light = new THREE.PointLight(0xffaa33, 4.0, 18);
-  light.position.y = 4.5;
+  light.position.y = FLAME_Y + 1;
   light.userData.isFlameLight = true;
   g.add(light);
   const menorahGlow = new THREE.PointLight(0xffcc55, 2.0, 12);
