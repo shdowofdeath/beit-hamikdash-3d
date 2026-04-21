@@ -515,6 +515,8 @@ html, body {
 
 .help-item {
   display: flex; flex-direction: column; gap: 0.2rem;
+  direction: rtl;
+  text-align: right;
 }
 
 .help-key {
@@ -587,6 +589,20 @@ html, body {
 }
 
 /* ===== Responsive ===== */
+@media (max-width: 1024px) and (min-width: 769px) {
+  #info-panel {
+    width: 300px;
+  }
+
+  #sidebar-nav {
+    width: 180px;
+  }
+
+  #minimap {
+    left: 210px;
+  }
+}
+
 @media (max-width: 768px) {
   #info-panel {
     right: 0.5rem; left: 0.5rem;

@@ -150,8 +150,8 @@ const TOUR_STOPS = [
       'ברזים: 12 — לרחיצה בו-זמנית של 12 כוהנים',
       'מוכני: מכונת עץ להורדת הכיור לבור בלילה (שמירת טריות המים)',
     ],
-    camera: { x: -1, y: 6, z: 5 },
-    target: { x: -3, y: 4, z: 2 },
+    camera: { x: 0, y: 6, z: -3 },
+    target: { x: -2, y: 5, z: -5 },
     markerPos: { x: -2, y: 6, z: -5 },
   },
   {
@@ -215,6 +215,22 @@ const TOUR_STOPS = [
     markerPos: { x: -11, y: 10, z: 0 },
   },
   {
+    id: 'menorah',
+    hebrew: 'מְנוֹרָה',
+    title: 'מנורת הזהב',
+    body: 'מנורת הזהב עמדה בצד דרום של ההיכל. נעשתה מקשה אחת מזהב טהור — 7 קנים, 22 גביעים, 11 כפתורים ו-9 פרחים. משקלה: ככר זהב (כ-34 ק"ג). הכוהנים הדליקו אותה בכל ערב, ונר המערבי היה דולק בנס.',
+    details: [
+      'חומר: זהב טהור, מקשה אחת (לא מחוברת מחלקים)',
+      '7 קנים: 3 מכל צד וקנה אמצעי',
+      'נר המערבי: דלק בנס — עדות שהשכינה שורה בישראל',
+      'גובה: 18 טפחים (כ-1.5 מטר)',
+      'מיקום: בצד דרום ההיכל, מול שולחן לחם הפנים',
+    ],
+    camera: { x: -10, y: 7, z: 5 },
+    target: { x: -10.2, y: 5.2, z: 1.2 },
+    markerPos: { x: -10.2, y: 9, z: 1.2 },
+  },
+  {
     id: 'kodesh-hakodashim',
     hebrew: 'קֹדֶשׁ הַקֳּדָשִׁים',
     title: 'קודש הקודשים',
@@ -238,26 +254,33 @@ let markers = [];
 let isAnimating = false;
 
 // ─── Materials Library ──────────────────────────────────────
+// Cached singletons — call MAT.limestone() etc. to get a shared instance
+const _matCache = {};
+function _mat(key, factory) {
+  if (!_matCache[key]) _matCache[key] = factory();
+  return _matCache[key];
+}
+
 const MAT = {
-  limestone: () => new THREE.MeshStandardMaterial({ color: 0xe8dcc8, roughness: 0.85, metalness: 0.02 }),
-  limestoneDark: () => new THREE.MeshStandardMaterial({ color: 0xc9bda6, roughness: 0.9, metalness: 0.02 }),
-  gold: () => new THREE.MeshStandardMaterial({ color: 0xc9a84c, roughness: 0.3, metalness: 0.85 }),
-  goldBright: () => new THREE.MeshStandardMaterial({ color: 0xe8d48b, roughness: 0.2, metalness: 0.9, emissive: 0x3a2a00, emissiveIntensity: 0.2 }),
-  bronze: () => new THREE.MeshStandardMaterial({ color: 0x8b5e3c, roughness: 0.4, metalness: 0.7 }),
-  marble: () => new THREE.MeshStandardMaterial({ color: 0xf5f0e8, roughness: 0.3, metalness: 0.05 }),
-  wood: () => new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.8, metalness: 0.0 }),
-  cedar: () => new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.7, metalness: 0.0 }),
-  ground: () => new THREE.MeshStandardMaterial({ color: 0xc4b48a, roughness: 1.0, metalness: 0.0 }),
-  water: () => new THREE.MeshPhysicalMaterial({
+  limestone:    () => _mat('limestone',    () => new THREE.MeshStandardMaterial({ color: 0xe8dcc8, roughness: 0.85, metalness: 0.02 })),
+  limestoneDark:() => _mat('limestoneDark',() => new THREE.MeshStandardMaterial({ color: 0xc9bda6, roughness: 0.9,  metalness: 0.02 })),
+  gold:         () => _mat('gold',         () => new THREE.MeshStandardMaterial({ color: 0xc9a84c, roughness: 0.3,  metalness: 0.85 })),
+  goldBright:   () => _mat('goldBright',   () => new THREE.MeshStandardMaterial({ color: 0xe8d48b, roughness: 0.2,  metalness: 0.9, emissive: 0x3a2a00, emissiveIntensity: 0.2 })),
+  bronze:       () => _mat('bronze',       () => new THREE.MeshStandardMaterial({ color: 0x8b5e3c, roughness: 0.4,  metalness: 0.7 })),
+  marble:       () => _mat('marble',       () => new THREE.MeshStandardMaterial({ color: 0xf5f0e8, roughness: 0.3,  metalness: 0.05 })),
+  wood:         () => _mat('wood',         () => new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.8,  metalness: 0.0 })),
+  cedar:        () => _mat('cedar',        () => new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.7,  metalness: 0.0 })),
+  ground:       () => _mat('ground',       () => new THREE.MeshStandardMaterial({ color: 0xc4b48a, roughness: 1.0,  metalness: 0.0 })),
+  water:        () => _mat('water',        () => new THREE.MeshPhysicalMaterial({
     color: 0x2288bb, roughness: 0.05, metalness: 0.1,
     transparent: true, opacity: 0.7, transmission: 0.3,
     clearcoat: 1.0, clearcoatRoughness: 0.05,
     side: THREE.DoubleSide,
-  }),
-  fire: () => new THREE.MeshStandardMaterial({ color: 0xff6600, emissive: 0xff4400, emissiveIntensity: 1.0, transparent: true, opacity: 0.8, name: 'fireMat' }),
-  curtain: () => new THREE.MeshStandardMaterial({ color: 0x2a1050, roughness: 0.9, metalness: 0.1, side: THREE.DoubleSide }),
-  curtainBlue: () => new THREE.MeshStandardMaterial({ color: 0x1a2a6a, roughness: 0.85, metalness: 0.05, side: THREE.DoubleSide }),
-  redLine: () => new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.6, metalness: 0.0 }),
+  })),
+  fire:         () => new THREE.MeshStandardMaterial({ color: 0xff6600, emissive: 0xff4400, emissiveIntensity: 1.0, transparent: true, opacity: 0.8, name: 'fireMat' }),
+  curtain:      () => _mat('curtain',      () => new THREE.MeshStandardMaterial({ color: 0x2a1050, roughness: 0.9, metalness: 0.1, side: THREE.DoubleSide })),
+  curtainBlue:  () => _mat('curtainBlue',  () => new THREE.MeshStandardMaterial({ color: 0x1a2a6a, roughness: 0.85, metalness: 0.05, side: THREE.DoubleSide })),
+  redLine:      () => _mat('redLine',      () => new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.6, metalness: 0.0 })),
 };
 
 // ─── Init ───────────────────────────────────────────────────
@@ -296,6 +319,7 @@ function init() {
   buildTemple();
   createMarkers();
   setupSkyGradient();
+  setupMinimapClick();
 
   window.addEventListener('resize', onResize);
   animate();
@@ -310,7 +334,8 @@ function setupLighting() {
   const sun = new THREE.DirectionalLight(0xfff4e0, 1.8);
   sun.position.set(60, 80, 40);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(4096, 4096);
+  const shadowRes = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 1024 : 2048;
+  sun.shadow.mapSize.set(shadowRes, shadowRes);
   sun.shadow.camera.left = -120;
   sun.shadow.camera.right = 120;
   sun.shadow.camera.top = 120;
@@ -1791,39 +1816,44 @@ function createPerson(type, x, y, z, rotY = 0, scale = 1) {
   const colors = PERSON_COLORS[type];
   const g = new THREE.Group();
 
+  // Upper body pivot — rotated for bowing, houses head + arms
+  const upper = new THREE.Group();
+  upper.position.y = 1.3 * scale;
+  g.add(upper);
+
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.22 * scale, 8, 8), new THREE.MeshStandardMaterial({ color: colors.skin, roughness: 0.8 }));
-  head.position.y = 1.55 * scale;
+  head.position.y = 0.25 * scale;
   head.castShadow = true;
-  g.add(head);
+  upper.add(head);
 
   if (type !== 'child') {
     const hair = new THREE.Mesh(new THREE.SphereGeometry(0.18 * scale, 8, 4, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x2a1a0a, roughness: 0.9 }));
-    hair.position.y = 1.6 * scale;
-    g.add(hair);
+    hair.position.y = 0.3 * scale;
+    upper.add(hair);
   }
 
   if (type === 'kohenGadol') {
     const mitr = new THREE.Mesh(new THREE.CylinderGeometry(0.18 * scale, 0.22 * scale, 0.25 * scale, 8), new THREE.MeshStandardMaterial({ color: colors.head, roughness: 0.3, metalness: 0.7 }));
-    mitr.position.y = 1.82 * scale;
-    g.add(mitr);
+    mitr.position.y = 0.52 * scale;
+    upper.add(mitr);
     const tzitz = new THREE.Mesh(new THREE.BoxGeometry(0.3 * scale, 0.1 * scale, 0.02 * scale), new THREE.MeshStandardMaterial({ color: 0xc9a84c, roughness: 0.2, metalness: 0.8 }));
-    tzitz.position.set(0, 1.72 * scale, 0.2 * scale);
-    g.add(tzitz);
+    tzitz.position.set(0, 0.42 * scale, 0.2 * scale);
+    upper.add(tzitz);
     const choshen = new THREE.Mesh(new THREE.BoxGeometry(0.22 * scale, 0.22 * scale, 0.04 * scale), new THREE.MeshStandardMaterial({ color: 0xc9a84c, roughness: 0.2, metalness: 0.8 }));
-    choshen.position.set(0, 1.25 * scale, 0.2 * scale);
-    g.add(choshen);
+    choshen.position.set(0, -0.05 * scale, 0.2 * scale);
+    upper.add(choshen);
   } else if (type === 'kohen') {
     const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.15 * scale, 0.2 * scale, 0.15 * scale, 8), new THREE.MeshStandardMaterial({ color: colors.head, roughness: 0.7 }));
-    cap.position.y = 1.75 * scale;
-    g.add(cap);
+    cap.position.y = 0.45 * scale;
+    upper.add(cap);
   } else if (type === 'israelM' || type === 'levi') {
     const cover = new THREE.Mesh(new THREE.SphereGeometry(0.17 * scale, 8, 4, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: colors.head, roughness: 0.8 }));
-    cover.position.y = 1.65 * scale;
-    g.add(cover);
+    cover.position.y = 0.35 * scale;
+    upper.add(cover);
   } else if (type === 'israelF') {
     const scarf = new THREE.Mesh(new THREE.SphereGeometry(0.24 * scale, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.6), new THREE.MeshStandardMaterial({ color: colors.head, roughness: 0.8 }));
-    scarf.position.y = 1.58 * scale;
-    g.add(scarf);
+    scarf.position.y = 0.28 * scale;
+    upper.add(scarf);
   }
 
   const body = new THREE.Mesh(new THREE.CylinderGeometry(0.2 * scale, 0.28 * scale, 0.9 * scale, 8), new THREE.MeshStandardMaterial({ color: colors.robe, roughness: 0.85 }));
@@ -1840,15 +1870,41 @@ function createPerson(type, x, y, z, rotY = 0, scale = 1) {
   skirt.castShadow = true;
   g.add(skirt);
 
-  [-1, 1].forEach(side => {
-    const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.06 * scale, 0.06 * scale, 0.55 * scale, 6), new THREE.MeshStandardMaterial({ color: colors.skin, roughness: 0.8 }));
-    arm.position.set(side * 0.28 * scale, 1.05 * scale, 0);
+  // Arm pivots at shoulder — rotate pivot to swing arms from shoulder joint
+  const armPivots = [-1, 1].map(side => {
+    const pivot = new THREE.Group();
+    pivot.position.set(side * 0.28 * scale, 1.3 * scale, 0);
+    const arm = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.06 * scale, 0.06 * scale, 0.55 * scale, 6),
+      new THREE.MeshStandardMaterial({ color: colors.skin, roughness: 0.8 })
+    );
+    arm.position.y = -0.275 * scale;
     arm.rotation.z = side * 0.15;
-    g.add(arm);
+    pivot.add(arm);
+    g.add(pivot);
+    return pivot;
   });
 
   g.position.set(x, y, z);
   g.rotation.y = rotY;
+
+  // Animation metadata
+  const isKohen = type === 'kohen' || type === 'kohenGadol';
+  const isChild = type === 'child';
+  g.userData.isPerson = true;
+  g.userData.personType = type;
+  g.userData.upper = upper;
+  g.userData.armPivots = armPivots;
+  g.userData.phase = Math.random() * Math.PI * 2;
+  g.userData.bowDepth = isKohen ? 0.18 : isChild ? 0.08 : 0.38;
+  g.userData.swayAmt = isKohen ? 0.03 : isChild ? 0.12 : 0.05;
+  g.userData.praySpeed = isKohen ? 0.55 : isChild ? 1.8 : 0.7 + Math.random() * 0.3;
+  // Children wander; others pray in place
+  g.userData.wanderAngle = Math.random() * Math.PI * 2;
+  g.userData.baseRotY = rotY;
+  g.userData.baseX = x;
+  g.userData.baseZ = z;
+
   return g;
 }
 
@@ -1940,6 +1996,7 @@ function createMarkers() {
 // ─── Tour Navigation ────────────────────────────────────────
 function goToStop(index) {
   if (isAnimating) return;
+  if (index < 0 || index >= TOUR_STOPS.length) return;
   currentStop = index;
   const stop = TOUR_STOPS[index];
   animateCamera(stop.camera, stop.target);
@@ -1993,7 +2050,7 @@ function showInfo(stop) {
   document.getElementById('location-name').textContent = stop.title;
 
   const detailsEl = document.getElementById('info-details');
-  while (detailsEl.firstChild) detailsEl.removeChild(detailsEl.firstChild);
+  detailsEl.replaceChildren();
   stop.details.forEach(detail => {
     const p = document.createElement('p');
     p.textContent = detail;
@@ -2014,9 +2071,62 @@ function updateTourUI() {
     dotsEl.appendChild(dot);
   });
   document.getElementById('tour-label').textContent = (currentStop + 1) + ' / ' + TOUR_STOPS.length;
+  updateSidebar();
+}
+
+function buildSidebar() {
+  const list = document.getElementById('sidebar-list');
+  while (list.firstChild) list.removeChild(list.firstChild);
+  TOUR_STOPS.forEach((stop, i) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.dataset.index = i;
+    const numSpan = document.createElement('span');
+    numSpan.className = 'sidebar-num';
+    numSpan.textContent = (i + 1);
+    const textSpan = document.createElement('span');
+    textSpan.textContent = stop.title;
+    btn.appendChild(textSpan);
+    btn.appendChild(numSpan);
+    btn.addEventListener('click', () => goToStop(i));
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+}
+
+function updateSidebar() {
+  const buttons = document.querySelectorAll('#sidebar-list li button');
+  buttons.forEach((btn, i) => {
+    btn.classList.toggle('active', i === currentStop);
+  });
+  const activeBtn = document.querySelector('#sidebar-list li button.active');
+  if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
 // ─── Mini-map ───────────────────────────────────────────────
+function setupMinimapClick() {
+  const canvas = document.getElementById('minimap-canvas');
+  canvas.style.cursor = 'pointer';
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const w = canvas.width, h = canvas.height;
+    const scale = 0.65;
+    const ox = w / 2 - MT_CX * scale;
+    const oy = h / 2;
+
+    let closest = -1, bestDist = 12;
+    TOUR_STOPS.forEach((stop, i) => {
+      const mx = ox + stop.markerPos.x * scale;
+      const my = oy + stop.markerPos.z * scale;
+      const d = Math.hypot(px - mx, py - my);
+      if (d < bestDist) { bestDist = d; closest = i; }
+    });
+    if (closest >= 0) goToStop(closest);
+  });
+}
+
 function drawMinimap() {
   const canvas = document.getElementById('minimap-canvas');
   const ctx = canvas.getContext('2d');
@@ -2102,9 +2212,10 @@ function animate() {
         obj.scale.z = 0.85 + Math.cos(time * 4.5 + id) * 0.2;
       } else if (layer === 'tongue') {
         const off = obj.userData.flameOffset || 0;
+        if (obj.userData.baseY === undefined) obj.userData.baseY = obj.position.y;
         obj.scale.y = 0.6 + Math.sin(time * 10 + off * 1.5) * 0.5;
         obj.scale.x = 0.8 + Math.sin(time * 8 + off) * 0.3;
-        obj.position.y += Math.sin(time * 6 + off) * 0.003;
+        obj.position.y = obj.userData.baseY + Math.sin(time * 6 + off) * 0.08;
         obj.rotation.z = Math.sin(time * 5 + off * 2) * 0.3;
       } else if (layer === 'ember') {
         obj.material.emissiveIntensity = 0.6 + Math.sin(time * 3 + id) * 0.4;
@@ -2129,6 +2240,52 @@ function animate() {
         obj.material.opacity = 0.4 + Math.sin(time * 5 + di) * 0.3;
       }
     }
+
+    if (obj.userData.isPerson) {
+      const { upper, armPivots, phase, bowDepth, swayAmt, praySpeed, personType } = obj.userData;
+      const t = time * praySpeed + phase;
+
+      if (personType === 'child') {
+        // Children wander in small circles and bob their heads
+        obj.userData.wanderAngle += 0.004;
+        const wanderR = 0.8;
+        obj.position.x = obj.userData.baseX + Math.cos(obj.userData.wanderAngle) * wanderR;
+        obj.position.z = obj.userData.baseZ + Math.sin(obj.userData.wanderAngle) * wanderR;
+        obj.rotation.y = obj.userData.wanderAngle + Math.PI / 2;
+        upper.rotation.x = Math.sin(t * 2) * 0.08;
+        armPivots[0].rotation.z =  0.2 + Math.sin(t * 1.5) * 0.25;
+        armPivots[1].rotation.z = -0.2 - Math.sin(t * 1.5 + 1) * 0.25;
+      } else if (personType === 'kohen' || personType === 'kohenGadol') {
+        // Priests: deliberate swaying torso, arms held forward in service
+        const sway = Math.sin(t * 0.9) * swayAmt;
+        obj.rotation.y = obj.userData.baseRotY + Math.sin(t * 0.4) * 0.06;
+        upper.rotation.x = 0.08 + Math.sin(t) * bowDepth;
+        upper.rotation.z = sway;
+        armPivots[0].rotation.x = -0.3 - Math.sin(t + 0.5) * 0.15;
+        armPivots[1].rotation.x = -0.3 - Math.sin(t - 0.5) * 0.15;
+        armPivots[0].rotation.z =  0.15 + sway * 0.5;
+        armPivots[1].rotation.z = -0.15 + sway * 0.5;
+      } else {
+        // Israelites / Levites: full Shemoneh Esrei bow cycle
+        // Bow curve: smooth dip-hold-rise using a shaped sine
+        const rawBow = Math.sin(t);
+        const bowCurve = rawBow > 0 ? Math.pow(rawBow, 0.6) : rawBow * 0.2;
+        upper.rotation.x = bowCurve * bowDepth;
+
+        // Gentle side sway independent of bow
+        upper.rotation.z = Math.sin(t * 0.7 + phase) * swayAmt;
+
+        // Arms rise as the person bows forward (hands extend toward floor)
+        const armLift = bowCurve * 0.45;
+        armPivots[0].rotation.x = -armLift;
+        armPivots[1].rotation.x = -armLift;
+        armPivots[0].rotation.z =  0.15 + Math.sin(t * 0.5) * 0.05;
+        armPivots[1].rotation.z = -0.15 - Math.sin(t * 0.5) * 0.05;
+
+        // Subtle whole-body rotation to feel alive
+        obj.rotation.y = obj.userData.baseRotY + Math.sin(t * 0.3 + phase) * 0.07;
+      }
+    }
   });
 
   renderer.render(scene, camera);
@@ -2145,6 +2302,7 @@ function setupUI() {
       document.getElementById('landing').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
       init();
+      buildSidebar();
       updateTourUI();
     }, 800);
   });
