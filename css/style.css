@@ -90,8 +90,16 @@ html, body {
   font-size: 1rem;
   color: var(--gold);
   letter-spacing: 0.05em;
-  margin-bottom: 1rem;
+  margin-bottom: 0.4rem;
   opacity: 0.85;
+}
+
+.school {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.2rem;
+  opacity: 0.75;
 }
 
 .landing-desc {
