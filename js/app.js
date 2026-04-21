@@ -2355,6 +2355,9 @@ function animate() {
         const s = 1 + Math.sin(time * 2 + ri * 2) * 0.3;
         obj.scale.set(s, s, 1);
         obj.material.opacity = 0.25 - ri * 0.06 + Math.sin(time * 3 + ri) * 0.08;
+      }
+    }
+
     if (obj.userData.isPerson) {
       const { upper, armPivots, phase, bowDepth, swayAmt, praySpeed, personType } = obj.userData;
       const t = time * praySpeed + phase;
@@ -2415,13 +2418,6 @@ function animate() {
         obj.rotation.y = obj.userData.baseRotY + Math.sin(t * 0.3 + phase) * 0.07;
       }
     }
-        armPivots[0].rotation.z =  0.15 + Math.sin(t * 0.5) * 0.05;
-        armPivots[1].rotation.z = -0.15 - Math.sin(t * 0.5) * 0.05;
-
-        // Subtle whole-body rotation to feel alive
-        obj.rotation.y = obj.userData.baseRotY + Math.sin(t * 0.3 + phase) * 0.07;
-      }
-    }
   });
 
   renderer.render(scene, camera);
@@ -2437,9 +2433,14 @@ function setupUI() {
     setTimeout(() => {
       document.getElementById('landing').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
-      init();
-      buildSidebar();
-      updateTourUI();
+      try {
+        init();
+        buildSidebar();
+        updateTourUI();
+      } catch (e) {
+        document.querySelector('#loading p').textContent = 'שגיאה: ' + e.message;
+        console.error('init() crashed:', e);
+      }
     }, 800);
   });
 
