@@ -36,8 +36,8 @@ const TOUR_STOPS = [
       'שערים: 5 שערים — חולדה (2 בדרום), שושן (מזרח), טדי (צפון), קיפונוס (מערב)',
       'גובה: נמוך במזרח ועולה בהדרגה לכיוון מערב',
     ],
-    camera: { x: 80, y: 55, z: 80 },
-    target: { x: 12, y: 3, z: 0 },
+    camera: { x: 70, y: 50, z: 55 },
+    target: { x: 5, y: 0, z: 0 },
     markerPos: { x: 55, y: 3, z: 40 },
   },
   {
@@ -50,8 +50,8 @@ const TOUR_STOPS = [
       'גובה: כ-30 אמות (15 מטר)',
       'שימוש: מסחר, בתי דין, מפגש ציבורי',
     ],
-    camera: { x: 30, y: 12, z: 48 },
-    target: { x: 12, y: 5, z: 45 },
+    camera: { x: 12, y: 6, z: 40 },
+    target: { x: 12, y: 3, z: 48 },
     markerPos: { x: 12, y: 6, z: 45 },
   },
   {
@@ -64,8 +64,8 @@ const TOUR_STOPS = [
       'חיל: מדרגה/רחבה ברוחב 10 אמות',
       '12 מעלות שיש: כל מעלה חצי אמה, להגיע מהחיל לעזרות',
     ],
-    camera: { x: 50, y: 8, z: 20 },
-    target: { x: 40, y: 2, z: 0 },
+    camera: { x: 35, y: 10, z: 22 },
+    target: { x: 18, y: 2, z: 0 },
     markerPos: { x: 48, y: 3, z: 15 },
   },
   {
@@ -78,8 +78,8 @@ const TOUR_STOPS = [
       'לשכות: נזירים (דרום-מזרח), עצים (צפון-מזרח), מצורעים (צפון-מערב), שמנים (דרום-מערב)',
       'מאפיין: נמוכה 7.5 אמות מהעזרה הפנימית',
     ],
-    camera: { x: 38, y: 8, z: 12 },
-    target: { x: 31, y: 3, z: 0 },
+    camera: { x: 40, y: 12, z: 18 },
+    target: { x: 31, y: 2, z: 0 },
     markerPos: { x: 31, y: 5, z: 0 },
   },
   {
@@ -92,8 +92,8 @@ const TOUR_STOPS = [
       '15 מעלות: חצי-עגולות, חצי אמה כל אחת — "שיר המעלות"',
       'לשכות: לשכת פנחס (מלבוש) מימין, לשכת עושי חביתין משמאל',
     ],
-    camera: { x: 25, y: 5, z: 4 },
-    target: { x: 18, y: 3.5, z: 0 },
+    camera: { x: 24, y: 8, z: 10 },
+    target: { x: 18, y: 5, z: 0 },
     markerPos: { x: 18, y: 8, z: 0 },
   },
   {
@@ -106,8 +106,8 @@ const TOUR_STOPS = [
       'חלוקה: עזרת ישראל (11 אמות) + עזרת כוהנים (גבוהה אמה)',
       '7 שערים: דלק, בכורות, מים (דרום); ניצוץ, קרבן, בית המוקד (צפון); ניקנור (מזרח)',
     ],
-    camera: { x: 12, y: 8, z: 12 },
-    target: { x: 0, y: 4, z: 0 },
+    camera: { x: 15, y: 18, z: 20 },
+    target: { x: 0, y: 3, z: 0 },
     markerPos: { x: 10, y: 5, z: 10 },
   },
   {
@@ -120,8 +120,8 @@ const TOUR_STOPS = [
       'שולחנות: 8 שולחנות שיש ב-2 שורות',
       'עמודים: 4 שורות עמודים נמוכים עם ווים לתליית בשר',
     ],
-    camera: { x: 5, y: 6, z: -12 },
-    target: { x: 1, y: 4, z: -7 },
+    camera: { x: 8, y: 8, z: -10 },
+    target: { x: 1, y: 4, z: -6 },
     markerPos: { x: 1, y: 5, z: -8 },
   },
   {
@@ -136,7 +136,7 @@ const TOUR_STOPS = [
       'חוט הסיקרא: קו אדום חוצה — מפריד דמים עליונים מתחתונים',
       'כבש: 32 אמות בדרום, ללא מדרגות (ציווי התורה)',
     ],
-    camera: { x: 8, y: 8, z: 10 },
+    camera: { x: 8, y: 10, z: 8 },
     target: { x: 1, y: 5, z: 0 },
     markerPos: { x: 1, y: 10, z: 0 },
   },
@@ -150,8 +150,8 @@ const TOUR_STOPS = [
       'ברזים: 12 — לרחיצה בו-זמנית של 12 כוהנים',
       'מוכני: מכונת עץ להורדת הכיור לבור בלילה (שמירת טריות המים)',
     ],
-    camera: { x: 2, y: 5, z: -8 },
-    target: { x: -2, y: 4, z: -5 },
+    camera: { x: -1, y: 6, z: 5 },
+    target: { x: -3, y: 4, z: 2 },
     markerPos: { x: -2, y: 6, z: -5 },
   },
   {
@@ -164,8 +164,8 @@ const TOUR_STOPS = [
       '4 לשכות: כבשים, לחם הפנים, אבני מזבח, בית טבילה',
       'שימוש: לינת הכוהנים, משמרות הלילה',
     ],
-    camera: { x: -8, y: 8, z: -20 },
-    target: { x: -8, y: 4, z: -16 },
+    camera: { x: -4, y: 8, z: -18 },
+    target: { x: -8, y: 4, z: -14 },
     markerPos: { x: -8, y: 8, z: -16 },
   },
   {
@@ -178,8 +178,8 @@ const TOUR_STOPS = [
       'שימוש: מושב הסנהדרין הגדולה (71 דיינים)',
       'חשיבות: משם יצאה הוראה לכל ישראל',
     ],
-    camera: { x: 8, y: 6, z: 18 },
-    target: { x: 5, y: 4, z: 15 },
+    camera: { x: 2, y: 8, z: 18 },
+    target: { x: 5, y: 4, z: 14 },
     markerPos: { x: 5, y: 5, z: 15 },
   },
   {
@@ -194,8 +194,8 @@ const TOUR_STOPS = [
       'שרשראות זהב: כוהנים צעירים טיפסו עליהן לראות עטרות בחלונות',
       'לשכות סכינים: 2 חדרי סכינים (בית חליפות) משני הצדדים',
     ],
-    camera: { x: 1, y: 8, z: 6 },
-    target: { x: -5, y: 8, z: 0 },
+    camera: { x: 3, y: 10, z: 12 },
+    target: { x: -5, y: 10, z: 0 },
     markerPos: { x: -5, y: 14, z: 0 },
   },
   {
@@ -210,8 +210,8 @@ const TOUR_STOPS = [
       '38 תאים: 15 בצפון, 15 בדרום, 8 במערב — ב-3 קומות',
       'כניסה: דלת כפולה 10 × 20 אמות',
     ],
-    camera: { x: -8.5, y: 6, z: 0 },
-    target: { x: -13, y: 5.5, z: 0 },
+    camera: { x: -10, y: 14, z: 4 },
+    target: { x: -11.5, y: 5, z: 0 },
     markerPos: { x: -11, y: 10, z: 0 },
   },
   {
@@ -225,7 +225,7 @@ const TOUR_STOPS = [
       'אבן השתייה: בולטת 3 אצבעות מהרצפה, עליה לפי המסורת נברא העולם',
       'כניסה: הכוהן הגדול בלבד, ביום הכיפורים בלבד',
     ],
-    camera: { x: -16, y: 6, z: 0.5 },
+    camera: { x: -16, y: 12, z: 5 },
     target: { x: -17.2, y: 5, z: 0 },
     markerPos: { x: -17.2, y: 8, z: 0 },
   },
@@ -248,7 +248,12 @@ const MAT = {
   wood: () => new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.8, metalness: 0.0 }),
   cedar: () => new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.7, metalness: 0.0 }),
   ground: () => new THREE.MeshStandardMaterial({ color: 0xc4b48a, roughness: 1.0, metalness: 0.0 }),
-  water: () => new THREE.MeshStandardMaterial({ color: 0x4a7c9b, roughness: 0.1, metalness: 0.3, transparent: true, opacity: 0.6 }),
+  water: () => new THREE.MeshPhysicalMaterial({
+    color: 0x2288bb, roughness: 0.05, metalness: 0.1,
+    transparent: true, opacity: 0.7, transmission: 0.3,
+    clearcoat: 1.0, clearcoatRoughness: 0.05,
+    side: THREE.DoubleSide,
+  }),
   fire: () => new THREE.MeshStandardMaterial({ color: 0xff6600, emissive: 0xff4400, emissiveIntensity: 1.0, transparent: true, opacity: 0.8, name: 'fireMat' }),
   curtain: () => new THREE.MeshStandardMaterial({ color: 0x2a1050, roughness: 0.9, metalness: 0.1, side: THREE.DoubleSide }),
   curtainBlue: () => new THREE.MeshStandardMaterial({ color: 0x1a2a6a, roughness: 0.85, metalness: 0.05, side: THREE.DoubleSide }),
@@ -992,28 +997,92 @@ function buildAltar(parent) {
   tableAtRamp2.position.set(-rampW / 2 - 0.6, Y_KOHANIM + 0.4, baseSize / 2 + rampL);
   altarGroup.add(tableAtRamp2);
 
-  const fireGeo = new THREE.SphereGeometry(1.2, 8, 8);
-  const fire = new THREE.Mesh(fireGeo, MAT.fire());
-  fire.position.set(-0.5, Y_KOHANIM + 6.5, -0.5);
-  fire.userData.isFlame = true;
-  altarGroup.add(fire);
+  buildFire(altarGroup, 0, Y_KOHANIM + 5.8, 0, 2.5);
 
-  const fire2 = new THREE.Mesh(new THREE.SphereGeometry(0.6, 6, 6), MAT.fire());
-  fire2.position.set(1, Y_KOHANIM + 6.2, 0.5);
-  fire2.userData.isFlame = true;
-  altarGroup.add(fire2);
-
-  const fire3 = new THREE.Mesh(new THREE.SphereGeometry(0.4, 6, 6), MAT.fire());
-  fire3.position.set(0.5, Y_KOHANIM + 6, 1);
-  fire3.userData.isFlame = true;
-  altarGroup.add(fire3);
-
-  const fireLight = new THREE.PointLight(0xff6600, 2.5, 25);
+  const fireLight = new THREE.PointLight(0xff6622, 3.5, 30);
   fireLight.position.set(0, Y_KOHANIM + 8, 0);
+  fireLight.userData.isFlameLight = true;
   altarGroup.add(fireLight);
 
   altarGroup.position.set(altarX, 0, 0);
   parent.add(altarGroup);
+}
+
+// ─── Realistic Fire Builder ─────────────────────────────────
+function buildFire(parent, x, y, z, scale = 1.0) {
+  const g = new THREE.Group();
+
+  const coreGeo = new THREE.ConeGeometry(0.5 * scale, 2.0 * scale, 8, 4);
+  const coreMat = new THREE.MeshStandardMaterial({
+    color: 0xffee55, emissive: 0xffcc00, emissiveIntensity: 2.5,
+    transparent: true, opacity: 0.95,
+  });
+  const core = new THREE.Mesh(coreGeo, coreMat);
+  core.position.y = scale;
+  core.userData.isFlame = true;
+  core.userData.flameLayer = 'core';
+  g.add(core);
+
+  const midGeo = new THREE.ConeGeometry(0.7 * scale, 1.6 * scale, 8, 3);
+  const midMat = new THREE.MeshStandardMaterial({
+    color: 0xff8800, emissive: 0xff6600, emissiveIntensity: 2.0,
+    transparent: true, opacity: 0.8,
+  });
+  const mid = new THREE.Mesh(midGeo, midMat);
+  mid.position.y = scale * 0.7;
+  mid.userData.isFlame = true;
+  mid.userData.flameLayer = 'mid';
+  g.add(mid);
+
+  const outerGeo = new THREE.ConeGeometry(0.9 * scale, 1.2 * scale, 8, 2);
+  const outerMat = new THREE.MeshStandardMaterial({
+    color: 0xff4400, emissive: 0xcc2200, emissiveIntensity: 1.5,
+    transparent: true, opacity: 0.55,
+  });
+  const outer = new THREE.Mesh(outerGeo, outerMat);
+  outer.position.y = scale * 0.5;
+  outer.userData.isFlame = true;
+  outer.userData.flameLayer = 'outer';
+  g.add(outer);
+
+  for (let i = 0; i < 5; i++) {
+    const ang = (i / 5) * Math.PI * 2;
+    const tongueGeo = new THREE.ConeGeometry(0.2 * scale, 1.0 * scale, 5, 2);
+    const tongueMat = new THREE.MeshStandardMaterial({
+      color: i % 2 === 0 ? 0xff6600 : 0xffaa22,
+      emissive: i % 2 === 0 ? 0xff4400 : 0xff8800,
+      emissiveIntensity: 1.8,
+      transparent: true, opacity: 0.7,
+    });
+    const tongue = new THREE.Mesh(tongueGeo, tongueMat);
+    tongue.position.set(
+      Math.cos(ang) * 0.35 * scale,
+      scale * 1.2,
+      Math.sin(ang) * 0.35 * scale
+    );
+    tongue.rotation.x = (Math.random() - 0.5) * 0.3;
+    tongue.rotation.z = (Math.random() - 0.5) * 0.3;
+    tongue.userData.isFlame = true;
+    tongue.userData.flameLayer = 'tongue';
+    tongue.userData.flameOffset = i;
+    g.add(tongue);
+  }
+
+  const emberGeo = new THREE.SphereGeometry(0.8 * scale, 8, 4);
+  const emberMat = new THREE.MeshStandardMaterial({
+    color: 0x882200, emissive: 0x661100, emissiveIntensity: 1.0,
+    transparent: true, opacity: 0.6,
+  });
+  const embers = new THREE.Mesh(emberGeo, emberMat);
+  embers.position.y = 0.1;
+  embers.scale.y = 0.3;
+  embers.userData.isFlame = true;
+  embers.userData.flameLayer = 'ember';
+  g.add(embers);
+
+  g.position.set(x, y, z);
+  parent.add(g);
+  return g;
 }
 
 // ─── Kiyor — with 12 Spigots ──────────────────────────────
@@ -1030,9 +1099,37 @@ function buildKiyor(parent) {
   basin.castShadow = true;
   kiyorGroup.add(basin);
 
-  const water = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.2, 16), MAT.water());
-  water.position.y = Y_KOHANIM + 2.6;
+  const basinInner = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.35, 0.7, 1.0, 16),
+    new THREE.MeshStandardMaterial({ color: 0x1a4466, roughness: 0.3, metalness: 0.2 })
+  );
+  basinInner.position.y = Y_KOHANIM + 2.15;
+  kiyorGroup.add(basinInner);
+
+  const waterGeo = new THREE.CircleGeometry(1.3, 32);
+  const waterMat = MAT.water();
+  const water = new THREE.Mesh(waterGeo, waterMat);
+  water.rotation.x = -Math.PI / 2;
+  water.position.y = Y_KOHANIM + 2.65;
+  water.userData.isWater = true;
   kiyorGroup.add(water);
+
+  const rippleMat = new THREE.MeshStandardMaterial({
+    color: 0x88ccee, emissive: 0x224466, emissiveIntensity: 0.3,
+    transparent: true, opacity: 0.2, side: THREE.DoubleSide,
+  });
+  for (let i = 0; i < 3; i++) {
+    const ripple = new THREE.Mesh(new THREE.TorusGeometry(0.3 + i * 0.35, 0.02, 4, 24), rippleMat);
+    ripple.rotation.x = Math.PI / 2;
+    ripple.position.y = Y_KOHANIM + 2.67;
+    ripple.userData.isWater = true;
+    ripple.userData.rippleIdx = i;
+    kiyorGroup.add(ripple);
+  }
+
+  const waterReflect = new THREE.PointLight(0x4488bb, 0.8, 6);
+  waterReflect.position.y = Y_KOHANIM + 3;
+  kiyorGroup.add(waterReflect);
 
   const spigotMat = MAT.bronze();
   for (let i = 0; i < 12; i++) {
@@ -1042,6 +1139,17 @@ function buildKiyor(parent) {
     spigot.rotation.z = Math.PI / 2;
     spigot.rotation.y = angle;
     kiyorGroup.add(spigot);
+
+    const dropGeo = new THREE.SphereGeometry(0.03, 4, 4);
+    const dropMat = new THREE.MeshStandardMaterial({
+      color: 0x66bbdd, emissive: 0x225577, emissiveIntensity: 0.3,
+      transparent: true, opacity: 0.7,
+    });
+    const drop = new THREE.Mesh(dropGeo, dropMat);
+    drop.position.set(Math.cos(angle) * 1.55, Y_KOHANIM + 1.7, Math.sin(angle) * 1.55);
+    drop.userData.isWater = true;
+    drop.userData.dropIdx = i;
+    kiyorGroup.add(drop);
   }
 
   kiyorGroup.position.set(-2, 0, -5);
@@ -1155,42 +1263,76 @@ function buildSanctuary(parent) {
   hFloor.receiveShadow = true;
   sanctuary.add(hFloor);
 
-  addStoneWall(sanctuary, heichalXD, heichalH, wallT, heichalCX, Y_ULAM + heichalH / 2, heichalZW / 2, 2, 2);
+  const glassWallMat = new THREE.MeshPhysicalMaterial({
+    color: 0xeeddaa, transparent: true, opacity: 0.08,
+    roughness: 0.05, metalness: 0.0, side: THREE.DoubleSide,
+  });
+  const glassFrame = new THREE.Mesh(
+    new THREE.BoxGeometry(heichalXD, heichalH, 0.05), glassWallMat
+  );
+  glassFrame.position.set(heichalCX, Y_ULAM + heichalH / 2, heichalZW / 2);
+  sanctuary.add(glassFrame);
+
   addStoneWall(sanctuary, heichalXD, heichalH, wallT, heichalCX, Y_ULAM + heichalH / 2, -heichalZW / 2, 2, 2);
   addStoneWall(sanctuary, wallT, heichalH, heichalZW, heichalFrontX, Y_ULAM + heichalH / 2, 0, 1, 2);
   addStoneWall(sanctuary, wallT, heichalH, heichalZW, heichalCX - heichalXD / 2, Y_ULAM + heichalH / 2, 0, 1, 2);
 
-  const hDoor = new THREE.Mesh(
+  const hDoorCutout = new THREE.Mesh(
     new THREE.BoxGeometry(wallT + 0.1, 4, 2),
     new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 1 })
   );
-  hDoor.position.set(heichalFrontX, Y_ULAM + 2, 0);
-  sanctuary.add(hDoor);
+  hDoorCutout.position.set(heichalFrontX, Y_ULAM + 2, 0);
+  sanctuary.add(hDoorCutout);
+
+  const hDoorGold = new THREE.Mesh(
+    new THREE.BoxGeometry(0.12, 3.8, 0.8), MAT.goldBright()
+  );
+  hDoorGold.position.set(heichalFrontX + 0.1, Y_ULAM + 2, 0.5);
+  sanctuary.add(hDoorGold);
+  const hDoorGold2 = hDoorGold.clone();
+  hDoorGold2.position.z = -0.5;
+  sanctuary.add(hDoorGold2);
 
   const goldPanelMat = new THREE.MeshStandardMaterial({ color: 0xc9a84c, roughness: 0.35, metalness: 0.8 });
-  [heichalZW / 2 - 0.05, -heichalZW / 2 + 0.05].forEach(zOff => {
-    for (let py = 0; py < 2; py++) {
-      for (let px = -1; px <= 1; px++) {
-        const panel = new THREE.Mesh(new THREE.BoxGeometry(1.8, 2.5, 0.05), goldPanelMat);
-        panel.position.set(heichalCX + px * 2.2, Y_ULAM + 2 + py * 3.5, zOff);
-        sanctuary.add(panel);
-      }
+  const zNorthPanel = -heichalZW / 2 + 0.05;
+  for (let py = 0; py < 2; py++) {
+    for (let px = -1; px <= 1; px++) {
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(1.8, 2.5, 0.05), goldPanelMat);
+      panel.position.set(heichalCX + px * 2.2, Y_ULAM + 2 + py * 3.5, zNorthPanel);
+      sanctuary.add(panel);
     }
-  });
+  }
 
   const cedarMat = MAT.cedar();
-  [heichalZW / 2 - 0.15, -heichalZW / 2 + 0.15].forEach(zOff => {
-    for (let py = 0; py < 2; py++) {
-      const cedarPanel = new THREE.Mesh(new THREE.BoxGeometry(heichalXD - 1, 3, 0.08), cedarMat);
-      cedarPanel.position.set(heichalCX, Y_ULAM + 1.5 + py * 3.8, zOff);
-      sanctuary.add(cedarPanel);
-    }
-  });
+  const zNorthCedar = -heichalZW / 2 + 0.15;
+  for (let py = 0; py < 2; py++) {
+    const cedarPanel = new THREE.Mesh(new THREE.BoxGeometry(heichalXD - 1, 3, 0.08), cedarMat);
+    cedarPanel.position.set(heichalCX, Y_ULAM + 1.5 + py * 3.8, zNorthCedar);
+    sanctuary.add(cedarPanel);
+  }
 
-  const hRoof = new THREE.Mesh(new THREE.BoxGeometry(heichalXD + 2, 0.8, heichalZW + 2), MAT.gold());
+  const backWallZ = heichalCX - heichalXD / 2 + 0.35;
+  for (let py = 0; py < 2; py++) {
+    for (let px = -1; px <= 0; px++) {
+      const bPanel = new THREE.Mesh(new THREE.BoxGeometry(0.05, 2.5, 1.5), goldPanelMat);
+      bPanel.position.set(backWallZ, Y_ULAM + 2 + py * 3.5, px * 1.5);
+      sanctuary.add(bPanel);
+    }
+  }
+
+  const hRoofMat = new THREE.MeshStandardMaterial({
+    color: 0xc9a84c, metalness: 0.7, roughness: 0.3,
+    transparent: true, opacity: 0.15, side: THREE.DoubleSide,
+  });
+  const hRoof = new THREE.Mesh(new THREE.BoxGeometry(heichalXD + 2, 0.8, heichalZW + 2), hRoofMat);
   hRoof.position.set(heichalCX, Y_ULAM + heichalH + 0.4, 0);
-  hRoof.castShadow = true;
   sanctuary.add(hRoof);
+  const hRoofEdge = new THREE.Mesh(
+    new THREE.BoxGeometry(heichalXD + 2.2, 0.15, heichalZW + 2.2),
+    MAT.gold()
+  );
+  hRoofEdge.position.set(heichalCX, Y_ULAM + heichalH + 0.85, 0);
+  sanctuary.add(hRoofEdge);
 
   for (let i = 0; i < 8; i++) {
     const spike = new THREE.Mesh(new THREE.ConeGeometry(0.12, 1.2, 4), MAT.gold());
@@ -1198,9 +1340,9 @@ function buildSanctuary(parent) {
     sanctuary.add(spike);
   }
 
-  buildMenorah(sanctuary, heichalCX + 1, Y_ULAM + 0.5, 1.2);
-  buildShulchan(sanctuary, heichalCX + 1, Y_ULAM + 0.5, -1.2);
-  buildIncenseAltar(sanctuary, heichalCX - 1.5, Y_ULAM + 0.5, 0);
+  buildMenorah(sanctuary, heichalCX + 1, Y_ULAM + 0.3, 1.2);
+  buildShulchan(sanctuary, heichalCX + 1, Y_ULAM + 0.3, -1.2);
+  buildIncenseAltar(sanctuary, heichalCX - 1.5, Y_ULAM + 0.3, 0);
 
   for (let side = -1; side <= 1; side += 2) {
     for (let i = 0; i < 5; i++) {
@@ -1210,12 +1352,15 @@ function buildSanctuary(parent) {
     }
   }
 
-  const hLight1 = new THREE.PointLight(0xffcc66, 1.0, 12);
-  hLight1.position.set(heichalCX + 1, Y_ULAM + 4, 1.2);
+  const hLight1 = new THREE.PointLight(0xffcc66, 3.0, 20);
+  hLight1.position.set(heichalCX + 1, Y_ULAM + 3, 1.2);
   sanctuary.add(hLight1);
-  const hLight2 = new THREE.PointLight(0xffdd88, 0.5, 10);
-  hLight2.position.set(heichalCX, Y_ULAM + 6, 0);
+  const hLight2 = new THREE.PointLight(0xffdd88, 2.0, 18);
+  hLight2.position.set(heichalCX, Y_ULAM + 5, 0);
   sanctuary.add(hLight2);
+  const hLight3 = new THREE.PointLight(0xffe088, 1.5, 15);
+  hLight3.position.set(heichalCX - 2, Y_ULAM + 2, 0);
+  sanctuary.add(hLight3);
 
   const cellW = 1;
   const cellH = 1.5;
@@ -1223,12 +1368,11 @@ function buildSanctuary(parent) {
   const cellMat = stoneWallMaterial(1, 1);
   for (let tier = 0; tier < 3; tier++) {
     for (let i = 0; i < 5; i++) {
-      [heichalZW / 2 + 0.8 + tier * 0.3, -heichalZW / 2 - 0.8 - tier * 0.3].forEach(zOff => {
-        const cell = new THREE.Mesh(new THREE.BoxGeometry(cellD, cellH, cellW), cellMat);
-        cell.position.set(heichalCX - heichalXD / 2 + 1 + i * (heichalXD / 5), Y_ULAM + tier * cellH + cellH / 2, zOff);
-        cell.castShadow = true;
-        sanctuary.add(cell);
-      });
+      const zNorth = -heichalZW / 2 - 0.8 - tier * 0.3;
+      const cell = new THREE.Mesh(new THREE.BoxGeometry(cellD, cellH, cellW), cellMat);
+      cell.position.set(heichalCX - heichalXD / 2 + 1 + i * (heichalXD / 5), Y_ULAM + tier * cellH + cellH / 2, zNorth);
+      cell.castShadow = true;
+      sanctuary.add(cell);
     }
     for (let i = 0; i < 3; i++) {
       const cell = new THREE.Mesh(new THREE.BoxGeometry(cellW, cellH, heichalZW + 2), cellMat);
@@ -1239,19 +1383,31 @@ function buildSanctuary(parent) {
   }
 
   const parochetX = heichalCX - heichalXD / 2 + 0.3;
+  const parochetMat1 = new THREE.MeshStandardMaterial({
+    color: 0x2244aa, roughness: 0.8, metalness: 0.1,
+    side: THREE.DoubleSide,
+  });
   const parochet1 = new THREE.Mesh(
-    new THREE.BoxGeometry(0.15, heichalH - 1, heichalZW - 0.5),
-    MAT.curtain()
+    new THREE.BoxGeometry(0.15, heichalH - 1, heichalZW - 0.5), parochetMat1
   );
   parochet1.position.set(parochetX, Y_ULAM + heichalH / 2, 0);
   sanctuary.add(parochet1);
 
+  const parochetMat2 = new THREE.MeshStandardMaterial({
+    color: 0x882244, roughness: 0.8, metalness: 0.1,
+    side: THREE.DoubleSide,
+  });
   const parochet2 = new THREE.Mesh(
-    new THREE.BoxGeometry(0.15, heichalH - 1, heichalZW - 0.5),
-    MAT.curtain()
+    new THREE.BoxGeometry(0.15, heichalH - 1, heichalZW - 0.5), parochetMat2
   );
-  parochet2.position.set(parochetX - 0.2, Y_ULAM + heichalH / 2, 0);
+  parochet2.position.set(parochetX - 0.25, Y_ULAM + heichalH / 2, 0);
   sanctuary.add(parochet2);
+
+  const parochetGoldBar = new THREE.Mesh(
+    new THREE.BoxGeometry(0.08, 0.15, heichalZW - 0.3), MAT.goldBright()
+  );
+  parochetGoldBar.position.set(parochetX - 0.12, Y_ULAM + heichalH - 0.6, 0);
+  sanctuary.add(parochetGoldBar);
 
   const kkZW = 4;
   const kkXD = 4;
@@ -1262,37 +1418,82 @@ function buildSanctuary(parent) {
   kkFloor.position.set(kkCX, Y_ULAM, 0);
   sanctuary.add(kkFloor);
 
-  addStoneWall(sanctuary, kkXD, kkH, wallT, kkCX, Y_ULAM + kkH / 2, kkZW / 2, 1, 2);
+  const kkGlassWall = new THREE.Mesh(
+    new THREE.BoxGeometry(kkXD, kkH, 0.05), glassWallMat
+  );
+  kkGlassWall.position.set(kkCX, Y_ULAM + kkH / 2, kkZW / 2);
+  sanctuary.add(kkGlassWall);
+
   addStoneWall(sanctuary, kkXD, kkH, wallT, kkCX, Y_ULAM + kkH / 2, -kkZW / 2, 1, 2);
   addStoneWall(sanctuary, wallT, kkH, kkZW, kkCX + kkXD / 2, Y_ULAM + kkH / 2, 0, 1, 2);
   addStoneWall(sanctuary, wallT, kkH, kkZW, kkCX - kkXD / 2, Y_ULAM + kkH / 2, 0, 1, 2);
 
-  const kkRoof = new THREE.Mesh(new THREE.BoxGeometry(kkXD + 1.5, 0.8, kkZW + 1.5), MAT.gold());
+  const kkRoofMat = new THREE.MeshStandardMaterial({
+    color: 0xc9a84c, metalness: 0.7, roughness: 0.3,
+    transparent: true, opacity: 0.15, side: THREE.DoubleSide,
+  });
+  const kkRoof = new THREE.Mesh(new THREE.BoxGeometry(kkXD + 1.5, 0.8, kkZW + 1.5), kkRoofMat);
   kkRoof.position.set(kkCX, Y_ULAM + kkH + 0.4, 0);
-  kkRoof.castShadow = true;
   sanctuary.add(kkRoof);
+  const kkRoofEdge = new THREE.Mesh(
+    new THREE.BoxGeometry(kkXD + 1.7, 0.15, kkZW + 1.7), MAT.gold()
+  );
+  kkRoofEdge.position.set(kkCX, Y_ULAM + kkH + 0.85, 0);
+  sanctuary.add(kkRoofEdge);
 
   const evenShtiyah = new THREE.Mesh(
-    new THREE.CylinderGeometry(1, 1.2, 0.12, 8),
-    new THREE.MeshStandardMaterial({ color: 0x8a7a6a, roughness: 0.95 })
+    new THREE.CylinderGeometry(1.3, 1.5, 0.2, 12),
+    new THREE.MeshStandardMaterial({ color: 0x9a8a7a, roughness: 0.85, metalness: 0.05 })
   );
-  evenShtiyah.position.set(kkCX, Y_ULAM + 0.26, 0);
+  evenShtiyah.position.set(kkCX, Y_ULAM + 0.3, 0);
   evenShtiyah.castShadow = true;
+  evenShtiyah.receiveShadow = true;
   sanctuary.add(evenShtiyah);
 
-  const kkLight = new THREE.PointLight(0xfff0d0, 1.2, 12);
-  kkLight.position.set(kkCX, Y_ULAM + 6, 0);
+  const evenRing = new THREE.Mesh(
+    new THREE.TorusGeometry(1.4, 0.08, 8, 24),
+    MAT.goldBright()
+  );
+  evenRing.position.set(kkCX, Y_ULAM + 0.42, 0);
+  evenRing.rotation.x = Math.PI / 2;
+  sanctuary.add(evenRing);
+
+  const kkLight = new THREE.PointLight(0xfff8e0, 4.0, 20);
+  kkLight.position.set(kkCX, Y_ULAM + 5, 0);
   sanctuary.add(kkLight);
-  const kkGlow = new THREE.PointLight(0xffeebb, 0.6, 8);
+  const kkGlow = new THREE.PointLight(0xffeebb, 3.0, 15);
   kkGlow.position.set(kkCX, Y_ULAM + 2, 0);
   sanctuary.add(kkGlow);
+  const kkFloorLight = new THREE.PointLight(0xffffcc, 2.0, 10);
+  kkFloorLight.position.set(kkCX, Y_ULAM + 0.8, 0);
+  sanctuary.add(kkFloorLight);
 
   const glowSphere = new THREE.Mesh(
-    new THREE.SphereGeometry(0.4, 16, 16),
-    new THREE.MeshStandardMaterial({ color: 0xffffee, emissive: 0xffddaa, emissiveIntensity: 0.6, transparent: true, opacity: 0.25 })
+    new THREE.SphereGeometry(0.6, 16, 16),
+    new THREE.MeshStandardMaterial({
+      color: 0xffffee, emissive: 0xffddaa, emissiveIntensity: 1.0,
+      transparent: true, opacity: 0.3
+    })
   );
-  glowSphere.position.set(kkCX, Y_ULAM + 3, 0);
+  glowSphere.position.set(kkCX, Y_ULAM + 2.5, 0);
   sanctuary.add(glowSphere);
+
+  const glowPillar = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.15, 0.15, 4, 8),
+    new THREE.MeshStandardMaterial({
+      color: 0xffeedd, emissive: 0xffcc88, emissiveIntensity: 0.5,
+      transparent: true, opacity: 0.15
+    })
+  );
+  glowPillar.position.set(kkCX, Y_ULAM + 3, 0);
+  sanctuary.add(glowPillar);
+
+  [{ x: kkCX + 1.2, z: 1.2 }, { x: kkCX + 1.2, z: -1.2 },
+   { x: kkCX - 1.2, z: 1.2 }, { x: kkCX - 1.2, z: -1.2 }].forEach(pos => {
+    const torch = new THREE.PointLight(0xffcc44, 0.8, 6);
+    torch.position.set(pos.x, Y_ULAM + 5, pos.z);
+    sanctuary.add(torch);
+  });
 
   parent.add(sanctuary);
 }
@@ -1302,29 +1503,54 @@ function buildMenorah(parent, x, y, z) {
   const g = new THREE.Group();
   const mat = MAT.goldBright();
 
-  g.add(addBox(g, new THREE.CylinderGeometry(0.5, 0.6, 0.3, 6), mat, 0, 0.15, 0));
-  g.add(addBox(g, new THREE.CylinderGeometry(0.1, 0.1, 2.5, 8), mat, 0, 1.4, 0));
+  g.add(addBox(g, new THREE.CylinderGeometry(0.6, 0.7, 0.35, 8), mat, 0, 0.18, 0));
+  g.add(addBox(g, new THREE.CylinderGeometry(0.15, 0.15, 3.2, 8), mat, 0, 1.8, 0));
+
+  const flameCoreMat = new THREE.MeshStandardMaterial({
+    color: 0xffee44, emissive: 0xffcc00, emissiveIntensity: 2.5,
+    transparent: true, opacity: 0.9,
+  });
+  const flameOuterMat = new THREE.MeshStandardMaterial({
+    color: 0xff7700, emissive: 0xff5500, emissiveIntensity: 1.8,
+    transparent: true, opacity: 0.6,
+  });
+
+  function addFlame(fx, fy, fz) {
+    const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.08, 6), mat);
+    cup.position.set(fx, fy - 0.1, fz);
+    g.add(cup);
+
+    const flameCore = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.35, 6), flameCoreMat);
+    flameCore.position.set(fx, fy + 0.15, fz);
+    flameCore.userData.isFlame = true;
+    flameCore.userData.flameLayer = 'core';
+    g.add(flameCore);
+
+    const flameOuter = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.25, 6), flameOuterMat);
+    flameOuter.position.set(fx, fy + 0.1, fz);
+    flameOuter.userData.isFlame = true;
+    flameOuter.userData.flameLayer = 'outer';
+    g.add(flameOuter);
+  }
 
   for (let side = -1; side <= 1; side += 2) {
     for (let i = 1; i <= 3; i++) {
-      const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 1.5, 6), mat);
-      branch.position.set(side * i * 0.3, 2 + i * 0.2, 0);
+      const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.0, 6), mat);
+      branch.position.set(side * i * 0.4, 2.5 + i * 0.25, 0);
       branch.rotation.z = side * 0.35;
       g.add(branch);
-      const cup = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6, 6), MAT.fire());
-      cup.position.set(side * i * 0.45, 2.8 + i * 0.1, 0);
-      cup.userData.isFlame = true;
-      g.add(cup);
+      addFlame(side * i * 0.6, 3.5 + i * 0.15, 0);
     }
   }
-  const topCup = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6, 6), MAT.fire());
-  topCup.position.y = 3;
-  topCup.userData.isFlame = true;
-  g.add(topCup);
+  addFlame(0, 3.8, 0);
 
-  const light = new THREE.PointLight(0xffaa33, 0.8, 6);
-  light.position.y = 3.2;
+  const light = new THREE.PointLight(0xffaa33, 4.0, 18);
+  light.position.y = 4;
+  light.userData.isFlameLight = true;
   g.add(light);
+  const menorahGlow = new THREE.PointLight(0xffcc55, 2.0, 12);
+  menorahGlow.position.y = 2.5;
+  g.add(menorahGlow);
 
   g.position.set(x, y, z);
   parent.add(g);
@@ -1335,27 +1561,35 @@ function buildShulchan(parent, x, y, z) {
   const g = new THREE.Group();
   const mat = MAT.goldBright();
 
-  const top = new THREE.Mesh(new THREE.BoxGeometry(1, 0.1, 0.5), mat);
-  top.position.y = 1;
+  const top = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.12, 0.8), mat);
+  top.position.y = 1.3;
   g.add(top);
 
-  const legGeo = new THREE.CylinderGeometry(0.04, 0.04, 1, 6);
-  [[-0.4, -0.2], [0.4, -0.2], [-0.4, 0.2], [0.4, 0.2]].forEach(([lx, lz]) => {
+  const rim = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.08, 0.9), mat);
+  rim.position.y = 1.4;
+  g.add(rim);
+
+  const legGeo = new THREE.CylinderGeometry(0.06, 0.06, 1.3, 6);
+  [[-0.65, -0.3], [0.65, -0.3], [-0.65, 0.3], [0.65, 0.3]].forEach(([lx, lz]) => {
     const leg = new THREE.Mesh(legGeo, mat);
-    leg.position.set(lx, 0.5, lz);
+    leg.position.set(lx, 0.65, lz);
     g.add(leg);
   });
 
+  const breadMat = new THREE.MeshStandardMaterial({
+    color: 0xdaa520, roughness: 0.7, emissive: 0x553300, emissiveIntensity: 0.2,
+  });
   for (let row = 0; row < 2; row++) {
     for (let col = 0; col < 6; col++) {
-      const bread = new THREE.Mesh(
-        new THREE.BoxGeometry(0.25, 0.08, 0.2),
-        new THREE.MeshStandardMaterial({ color: 0xdaa520, roughness: 0.8 })
-      );
-      bread.position.set(-0.35 + col * 0.14, 1.08 + row * 0.09, 0);
+      const bread = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.1, 0.3), breadMat);
+      bread.position.set(-0.5 + col * 0.2, 1.5 + row * 0.12, 0);
       g.add(bread);
     }
   }
+
+  const tableLight = new THREE.PointLight(0xffdd66, 1.0, 6);
+  tableLight.position.y = 2.2;
+  g.add(tableLight);
 
   g.position.set(x, y, z);
   parent.add(g);
@@ -1366,23 +1600,39 @@ function buildIncenseAltar(parent, x, y, z) {
   const g = new THREE.Group();
   const mat = MAT.goldBright();
 
-  const body = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.2, 0.6), mat);
-  body.position.y = 0.6;
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.2, 1.0), mat);
+  base.position.y = 0.1;
+  g.add(base);
+
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.8, 0.8), mat);
+  body.position.y = 1.1;
   body.castShadow = true;
   g.add(body);
 
-  [[0.25, 0.25], [-0.25, 0.25], [0.25, -0.25], [-0.25, -0.25]].forEach(([hx, hz]) => {
-    const horn = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.3, 0.12), mat);
-    horn.position.set(hx, 1.35, hz);
+  const topRim = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.12, 0.95), mat);
+  topRim.position.y = 2.06;
+  g.add(topRim);
+
+  [[0.35, 0.35], [-0.35, 0.35], [0.35, -0.35], [-0.35, -0.35]].forEach(([hx, hz]) => {
+    const horn = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.4, 0.15), mat);
+    horn.position.set(hx, 2.3, hz);
     g.add(horn);
   });
 
-  const smoke = new THREE.Mesh(
-    new THREE.SphereGeometry(0.2, 8, 8),
-    new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.3 })
-  );
-  smoke.position.y = 1.5;
-  g.add(smoke);
+  const smokeMat = new THREE.MeshStandardMaterial({
+    color: 0xeeeedd, emissive: 0xccbbaa, emissiveIntensity: 0.5,
+    transparent: true, opacity: 0.35,
+  });
+  for (let i = 0; i < 3; i++) {
+    const smoke = new THREE.Mesh(new THREE.SphereGeometry(0.15 + i * 0.1, 8, 8), smokeMat);
+    smoke.position.y = 2.6 + i * 0.5;
+    smoke.userData.isFlame = true;
+    g.add(smoke);
+  }
+
+  const altarLight = new THREE.PointLight(0xffeecc, 1.5, 8);
+  altarLight.position.y = 3;
+  g.add(altarLight);
 
   g.position.set(x, y, z);
   parent.add(g);
@@ -1427,10 +1677,7 @@ function buildBetHaMoked(parent) {
   innerLight.position.set(cx, Y_AZARAH + 3, cz);
   parent.add(innerLight);
 
-  const innerFire = new THREE.Mesh(new THREE.SphereGeometry(0.3, 6, 6), MAT.fire());
-  innerFire.position.set(cx, Y_AZARAH + 0.5, cz);
-  innerFire.userData.isFlame = true;
-  parent.add(innerFire);
+  buildFire(parent, cx, Y_AZARAH + 0.2, cz, 0.6);
 }
 
 // ─── Lishkat HaGazit — Sanhedrin Chamber ───────────────────
@@ -1521,13 +1768,11 @@ function buildDecorations(parent) {
     torch.position.set(tx, Y_AZARAH + 2.5, tz);
     parent.add(torch);
 
-    const flame = new THREE.Mesh(new THREE.SphereGeometry(0.18, 6, 6), MAT.fire());
-    flame.position.set(tx, Y_AZARAH + 3.7, tz);
-    flame.userData.isFlame = true;
-    parent.add(flame);
+    buildFire(parent, tx, Y_AZARAH + 3.5, tz, 0.25);
 
-    const tLight = new THREE.PointLight(0xff8844, 0.4, 10);
+    const tLight = new THREE.PointLight(0xff8844, 0.6, 10);
     tLight.position.set(tx, Y_AZARAH + 4, tz);
+    tLight.userData.isFlameLight = true;
     parent.add(tLight);
   }
 }
