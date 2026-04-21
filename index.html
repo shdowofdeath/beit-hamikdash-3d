@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בֵּית הַמִּקְדָּשׁ — סיור וירטואלי תלת-ממדי</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Landing Screen -->
+  <div id="landing">
+    <div class="landing-overlay"></div>
+    <div class="landing-content">
+      <div class="menorah-icon">🕎</div>
+      <h1>בֵּית הַמִּקְדָּשׁ</h1>
+      <h2>סיור וירטואלי תלת-ממדי</h2>
+      <p class="landing-desc">צעדו בתוך שחזור תלת-ממדי של בית המקדש השני בירושלים. חקרו את העזרות, את ההיכל ואת קודש הקודשים.</p>
+      <button id="btn-enter" class="btn-gold">התחילו את המסע</button>
+    </div>
+    <div class="scroll-hint">גררו בעכבר לסיבוב · גלגלו לזום · לחצו על סמנים ללמוד</div>
+  </div>
+
+  <!-- 3D Canvas Container -->
+  <div id="app" class="hidden">
+    <canvas id="scene"></canvas>
+
+    <!-- Top Bar -->
+    <div id="top-bar">
+      <div class="top-left">
+        <span class="logo-text">🕎 בית המקדש</span>
+      </div>
+      <div class="top-center" id="location-name">הר הבית</div>
+      <div class="top-right">
+        <button id="btn-help" class="icon-btn" title="עזרה">?</button>
+        <button id="btn-overview" class="icon-btn" title="מבט כללי">⊡</button>
+      </div>
+    </div>
+
+    <!-- Tour Stop Info Panel -->
+    <div id="info-panel" class="hidden">
+      <button id="info-close" class="info-close-btn">✕</button>
+      <div class="info-header">
+        <span id="info-hebrew" class="info-hebrew"></span>
+        <h3 id="info-title"></h3>
+      </div>
+      <p id="info-body"></p>
+      <div id="info-details"></div>
+    </div>
+
+    <!-- Tour Navigation -->
+    <div id="tour-nav">
+      <button id="btn-prev" class="nav-btn" title="תחנה קודמת">›</button>
+      <div id="tour-progress">
+        <div id="tour-dots"></div>
+        <span id="tour-label">1 / 8</span>
+      </div>
+      <button id="btn-next" class="nav-btn" title="תחנה הבאה">‹</button>
+    </div>
+
+    <!-- Mini-map -->
+    <div id="minimap">
+      <canvas id="minimap-canvas" width="180" height="180"></canvas>
+      <div id="minimap-label">מבט עליון</div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal hidden">
+      <div class="modal-content">
+        <button class="modal-close" id="help-close">✕</button>
+        <h2>מדריך ניווט</h2>
+        <div class="help-grid">
+          <div class="help-item"><span class="help-key">🖱 גרירה שמאלית</span><span>סיבוב מצלמה</span></div>
+          <div class="help-item"><span class="help-key">🖱 גרירה ימנית</span><span>הזזת תצוגה</span></div>
+          <div class="help-item"><span class="help-key">גלגלת</span><span>זום פנימה/החוצה</span></div>
+          <div class="help-item"><span class="help-key">לחיצה על סמן</span><span>צפייה בתחנה</span></div>
+          <div class="help-item"><span class="help-key">חצים ‹ ›</span><span>ניווט בסיור</span></div>
+          <div class="help-item"><span class="help-key">⊡ מבט כללי</span><span>איפוס מצלמה</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading">
+      <div class="loader-ring"></div>
+      <p>…בונים את בית המקדש</p>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
