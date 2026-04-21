@@ -2081,8 +2081,53 @@ function animate() {
 
   const time = performance.now() * 0.001;
   scene.traverse(obj => {
-    if (obj.userData && obj.userData.isFlame) {
-      obj.scale.setScalar(0.85 + Math.sin(time * 4 + obj.id) * 0.2);
+    if (!obj.userData) return;
+
+    if (obj.userData.isFlame) {
+      const id = obj.id;
+      const layer = obj.userData.flameLayer;
+
+      if (layer === 'core') {
+        obj.scale.x = 0.8 + Math.sin(time * 8 + id) * 0.25;
+        obj.scale.y = 0.85 + Math.sin(time * 6 + id * 1.3) * 0.2;
+        obj.scale.z = 0.8 + Math.cos(time * 7 + id) * 0.25;
+        obj.rotation.y = time * 2 + id;
+      } else if (layer === 'mid') {
+        obj.scale.x = 0.9 + Math.sin(time * 5 + id * 0.7) * 0.15;
+        obj.scale.y = 0.8 + Math.sin(time * 7 + id) * 0.25;
+        obj.scale.z = 0.9 + Math.cos(time * 6 + id * 1.1) * 0.15;
+      } else if (layer === 'outer') {
+        obj.scale.x = 0.85 + Math.sin(time * 4 + id) * 0.2;
+        obj.scale.y = 0.75 + Math.sin(time * 5.5 + id * 0.9) * 0.3;
+        obj.scale.z = 0.85 + Math.cos(time * 4.5 + id) * 0.2;
+      } else if (layer === 'tongue') {
+        const off = obj.userData.flameOffset || 0;
+        obj.scale.y = 0.6 + Math.sin(time * 10 + off * 1.5) * 0.5;
+        obj.scale.x = 0.8 + Math.sin(time * 8 + off) * 0.3;
+        obj.position.y += Math.sin(time * 6 + off) * 0.003;
+        obj.rotation.z = Math.sin(time * 5 + off * 2) * 0.3;
+      } else if (layer === 'ember') {
+        obj.material.emissiveIntensity = 0.6 + Math.sin(time * 3 + id) * 0.4;
+      } else {
+        obj.scale.setScalar(0.85 + Math.sin(time * 4 + id) * 0.2);
+      }
+    }
+
+    if (obj.userData.isFlameLight) {
+      obj.intensity = obj.intensity * (0.95 + Math.sin(time * 6 + obj.id) * 0.08);
+    }
+
+    if (obj.userData.isWater) {
+      if (obj.userData.rippleIdx !== undefined) {
+        const ri = obj.userData.rippleIdx;
+        const s = 1 + Math.sin(time * 2 + ri * 2) * 0.3;
+        obj.scale.set(s, s, 1);
+        obj.material.opacity = 0.25 - ri * 0.06 + Math.sin(time * 3 + ri) * 0.08;
+      } else if (obj.userData.dropIdx !== undefined) {
+        const di = obj.userData.dropIdx;
+        obj.position.y += Math.sin(time * 4 + di * 0.8) * 0.002;
+        obj.material.opacity = 0.4 + Math.sin(time * 5 + di) * 0.3;
+      }
     }
   });
 
