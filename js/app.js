@@ -785,10 +785,12 @@ function buildNikanorGate(parent) {
   const gateX = WC_X1;
   const gateY = Y_NASHIM;
 
+  // 15 semicircular steps — each step slightly narrower toward the top (fanwise)
   for (let i = 0; i < 15; i++) {
-    const stepGeo = new THREE.CylinderGeometry(6, 6, 0.12, 32, 1, false, 0, Math.PI);
+    const r = 5.0 + (14 - i) * 0.25; // bottom step widest, top step narrowest
+    const stepGeo = new THREE.CylinderGeometry(r, r, 0.13, 32, 1, false, 0, Math.PI);
     const step = new THREE.Mesh(stepGeo, MAT.marble());
-    step.position.set(gateX + 0.3, gateY + i * 0.12, 0);
+    step.position.set(gateX + 0.3, gateY + i * 0.13, 0);
     step.rotation.y = Math.PI / 2;
     step.receiveShadow = true;
     step.castShadow = true;
@@ -1176,7 +1178,8 @@ function buildKiyor(parent) {
     kiyorGroup.add(drop);
   }
 
-  kiyorGroup.position.set(-2, 0, -5);
+  // Between altar (x≈1) and Ulam entrance (x≈-5), slightly south (z=-2.5)
+  kiyorGroup.position.set(-2.5, 0, -2.5);
   parent.add(kiyorGroup);
 }
 
@@ -1565,8 +1568,34 @@ function buildMenorah(parent, x, y, z) {
   const g = new THREE.Group();
   const mat = MAT.goldBright();
 
-  g.add(addBox(g, new THREE.CylinderGeometry(0.6, 0.7, 0.35, 8), mat, 0, 0.18, 0));
-  g.add(addBox(g, new THREE.CylinderGeometry(0.15, 0.15, 3.2, 8), mat, 0, 1.8, 0));
+  // Tripod base (3 legs) — per iconographic tradition
+  const legAngles = [0, Math.PI * 2 / 3, Math.PI * 4 / 3];
+  legAngles.forEach(angle => {
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.07, 0.55, 6), mat);
+    leg.position.set(Math.sin(angle) * 0.38, 0.28, Math.cos(angle) * 0.38);
+    leg.rotation.z = Math.sin(angle) * 0.28;
+    leg.rotation.x = Math.cos(angle) * 0.28;
+    g.add(leg);
+  });
+
+  // Base disc
+  const baseDisc = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.58, 0.12, 10), mat);
+  baseDisc.position.y = 0.06;
+  g.add(baseDisc);
+
+  // Central stem — 3.5 units tall
+  const stemH = 3.5;
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, stemH, 8), mat);
+  stem.position.y = stemH / 2 + 0.12;
+  g.add(stem);
+
+  // Knobs on central stem at 3 levels
+  const FLAME_Y = 3.85; // all flames at same height
+  [1.1, 1.9, 2.7].forEach(ky => {
+    const knob = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 6), mat);
+    knob.position.y = ky;
+    g.add(knob);
+  });
 
   const flameCoreMat = new THREE.MeshStandardMaterial({
     color: 0xffee44, emissive: 0xffcc00, emissiveIntensity: 2.5,
@@ -1578,59 +1607,66 @@ function buildMenorah(parent, x, y, z) {
   });
 
   function addFlame(fx, fy, fz) {
-    const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.08, 6), mat);
-    cup.position.set(fx, fy - 0.1, fz);
+    // Oil cup at tip
+    const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.05, 0.1, 8), mat);
+    cup.position.set(fx, fy - 0.07, fz);
     g.add(cup);
-
-    const flameCore = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.35, 6), flameCoreMat);
-    flameCore.position.set(fx, fy + 0.15, fz);
+    const flameCore = new THREE.Mesh(new THREE.ConeGeometry(0.055, 0.32, 6), flameCoreMat);
+    flameCore.position.set(fx, fy + 0.14, fz);
     flameCore.userData.isFlame = true;
     flameCore.userData.flameLayer = 'core';
     g.add(flameCore);
-
-    const flameOuter = new THREE.Mesh(new THREE.ConeGeometry(0.1, 0.25, 6), flameOuterMat);
-    flameOuter.position.set(fx, fy + 0.1, fz);
+    const flameOuter = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.22, 6), flameOuterMat);
+    flameOuter.position.set(fx, fy + 0.09, fz);
     flameOuter.userData.isFlame = true;
     flameOuter.userData.flameLayer = 'outer';
     g.add(flameOuter);
   }
 
-  for (let side = -1; side <= 1; side += 2) {
-    for (let i = 1; i <= 3; i++) {
-      const branch = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 2.0, 6), mat);
-      branch.position.set(side * i * 0.4, 2.5 + i * 0.25, 0);
-      branch.rotation.z = side * 0.35;
-      g.add(branch);
+  // Central flame
+  addFlame(0, FLAME_Y, 0);
 
-      // Knob (כפתור) on branch midpoint
-      const knob = new THREE.Mesh(new THREE.SphereGeometry(0.11, 6, 6), mat);
-      knob.position.set(side * i * 0.3, 2.6 + i * 0.25, 0);
-      g.add(knob);
+  // 6 side branches — curved arcs using TubeGeometry
+  // Each branch exits stem at a certain height, arcs outward, then rises to FLAME_Y
+  const branchDefs = [
+    { side: -1, i: 1, exitY: 1.3, midX: -0.55, midY: 1.6, tipX: -0.72 },
+    { side: -1, i: 2, exitY: 1.9, midX: -1.0,  midY: 2.1, tipX: -1.32 },
+    { side: -1, i: 3, exitY: 2.5, midX: -1.45, midY: 2.55, tipX: -1.92 },
+    { side:  1, i: 1, exitY: 1.3, midX:  0.55, midY: 1.6, tipX:  0.72 },
+    { side:  1, i: 2, exitY: 1.9, midX:  1.0,  midY: 2.1, tipX:  1.32 },
+    { side:  1, i: 3, exitY: 2.5, midX:  1.45, midY: 2.55, tipX:  1.92 },
+  ];
 
-      // Bowl/cup (גביע) near top of branch
-      const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.06, 0.12, 8), mat);
-      bowl.position.set(side * i * 0.55, 3.38 + i * 0.13, 0);
-      g.add(bowl);
+  branchDefs.forEach(({ exitY, midX, midY, tipX }) => {
+    // Curved tube for the branch
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0,    exitY,    0),
+      new THREE.Vector3(midX * 0.5, (exitY + midY) / 2, 0),
+      new THREE.Vector3(midX, midY,    0),
+      new THREE.Vector3(tipX * 0.95, FLAME_Y - 0.35, 0),
+      new THREE.Vector3(tipX, FLAME_Y - 0.05, 0),
+    ]);
+    const tube = new THREE.Mesh(
+      new THREE.TubeGeometry(curve, 16, 0.055, 6, false),
+      mat
+    );
+    g.add(tube);
 
-      // Flower petal (פרח) at top
-      const flower = new THREE.Mesh(new THREE.SphereGeometry(0.08, 6, 4, 0, Math.PI * 2, 0, Math.PI / 2), mat);
-      flower.position.set(side * i * 0.6, 3.47 + i * 0.14, 0);
-      flower.rotation.x = Math.PI;
-      g.add(flower);
+    // Knob at mid-arc
+    const knob = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6, 6), mat);
+    knob.position.set(midX * 0.7, midY - 0.1, 0);
+    g.add(knob);
 
-      addFlame(side * i * 0.6, 3.55 + i * 0.15, 0);
-    }
-  }
-  // Knobs on central stem (3 levels per sources)
-  [1.2, 2.0, 2.8].forEach(stemY => {
-    const stemKnob = new THREE.Mesh(new THREE.SphereGeometry(0.13, 6, 6), mat);
-    stemKnob.position.set(0, stemY, 0);
-    g.add(stemKnob);
+    // Cup/flower at tip
+    const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.06, 0.14, 8), mat);
+    bowl.position.set(tipX, FLAME_Y - 0.1, 0);
+    g.add(bowl);
+
+    addFlame(tipX, FLAME_Y, 0);
   });
-  addFlame(0, 3.9, 0);
 
   const light = new THREE.PointLight(0xffaa33, 4.0, 18);
-  light.position.y = 4;
+  light.position.y = 4.5;
   light.userData.isFlameLight = true;
   g.add(light);
   const menorahGlow = new THREE.PointLight(0xffcc55, 2.0, 12);
@@ -1662,15 +1698,16 @@ function buildShulchan(parent, x, y, z) {
   });
 
   const breadMat = new THREE.MeshStandardMaterial({
-    color: 0xdaa520, roughness: 0.7, emissive: 0x553300, emissiveIntensity: 0.2,
+    color: 0xd4a840, roughness: 0.75, emissive: 0x442200, emissiveIntensity: 0.15,
   });
-  for (let row = 0; row < 2; row++) {
-    for (let col = 0; col < 6; col++) {
-      const bread = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.1, 0.3), breadMat);
-      bread.position.set(-0.5 + col * 0.2, 1.5 + row * 0.12, 0);
+  // 12 loaves in 2 stacks of 6 — north and south rows per Middot
+  [-0.22, 0.22].forEach(zOff => {
+    for (let i = 0; i < 6; i++) {
+      const bread = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.08, 0.18), breadMat);
+      bread.position.set(0, 1.42 + i * 0.09, zOff);
       g.add(bread);
     }
-  }
+  });
 
   const tableLight = new THREE.PointLight(0xffdd66, 1.0, 6);
   tableLight.position.y = 2.2;
@@ -1685,22 +1722,26 @@ function buildIncenseAltar(parent, x, y, z) {
   const g = new THREE.Group();
   const mat = MAT.goldBright();
 
-  const base = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.2, 1.0), mat);
-  base.position.y = 0.1;
+  // Base moulding
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.18, 1.1), mat);
+  base.position.y = 0.09;
   g.add(base);
 
-  const body = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.8, 0.8), mat);
-  body.position.y = 1.1;
+  // Body — 1×1×2 cubit proportions (square cross-section)
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2.0, 0.9), mat);
+  body.position.y = 1.18;
   body.castShadow = true;
   g.add(body);
 
-  const topRim = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.12, 0.95), mat);
-  topRim.position.y = 2.06;
-  g.add(topRim);
+  // Crown rim (זר זהב) — raised gold border at top
+  const crown = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.14, 1.05), mat);
+  crown.position.y = 2.25;
+  g.add(crown);
 
-  [[0.35, 0.35], [-0.35, 0.35], [0.35, -0.35], [-0.35, -0.35]].forEach(([hx, hz]) => {
-    const horn = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.4, 0.15), mat);
-    horn.position.set(hx, 2.3, hz);
+  // 4 prominent horns (קרנות) — integral with the altar per sources
+  [[0.38, 0.38], [-0.38, 0.38], [0.38, -0.38], [-0.38, -0.38]].forEach(([hx, hz]) => {
+    const horn = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.45, 0.18), mat);
+    horn.position.set(hx, 2.47, hz);
     g.add(horn);
   });
 
@@ -2433,14 +2474,9 @@ function setupUI() {
     setTimeout(() => {
       document.getElementById('landing').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
-      try {
-        init();
-        buildSidebar();
-        updateTourUI();
-      } catch (e) {
-        document.querySelector('#loading p').textContent = 'שגיאה: ' + e.message;
-        console.error('init() crashed:', e);
-      }
+      init();
+      buildSidebar();
+      updateTourUI();
     }, 800);
   });
 
