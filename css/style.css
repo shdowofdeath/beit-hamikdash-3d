@@ -86,6 +86,14 @@ html, body {
   margin-bottom: 1.5rem;
 }
 
+.presenter {
+  font-size: 1rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  opacity: 0.85;
+}
+
 .landing-desc {
   max-width: 500px;
   margin: 0 auto 2.5rem;
@@ -329,10 +337,103 @@ html, body {
   letter-spacing: 0.1em;
 }
 
+/* ===== Sidebar Navigation ===== */
+#sidebar-nav {
+  position: fixed;
+  left: 1.5rem; top: 80px;
+  width: 220px;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+  background: var(--bg-panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: var(--radius);
+  z-index: 20;
+  box-shadow: var(--shadow);
+  animation: sidebarSlideIn 0.4s ease;
+}
+
+@keyframes sidebarSlideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.sidebar-header {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  padding: 1rem 1rem 0.5rem;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+  direction: rtl;
+  text-align: right;
+}
+
+#sidebar-list {
+  list-style: none;
+  padding: 0.4rem 0;
+}
+
+#sidebar-list li {
+  direction: rtl;
+  text-align: right;
+}
+
+#sidebar-list li button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  direction: rtl;
+  text-align: right;
+}
+
+#sidebar-list li button:hover {
+  background: rgba(201,168,76,0.08);
+  color: var(--gold-light);
+}
+
+#sidebar-list li button.active {
+  background: rgba(201,168,76,0.12);
+  color: var(--gold);
+  font-weight: 600;
+  border-right: 3px solid var(--gold);
+}
+
+#sidebar-list li button .sidebar-num {
+  font-size: 0.7rem;
+  color: rgba(201,168,76,0.4);
+  min-width: 1.4em;
+  text-align: center;
+}
+
+#sidebar-list li button.active .sidebar-num {
+  color: var(--gold);
+}
+
+#sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+#sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(201,168,76,0.2);
+  border-radius: 2px;
+}
+
 /* ===== Mini-map ===== */
 #minimap {
   position: fixed;
-  bottom: 7rem; left: 1.5rem;
+  bottom: 7rem; left: 250px;
   background: var(--bg-panel);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(201,168,76,0.15);
@@ -487,6 +588,7 @@ html, body {
   }
 
   #minimap { display: none; }
+  #sidebar-nav { display: none; }
 
   .top-center { display: none; }
 
