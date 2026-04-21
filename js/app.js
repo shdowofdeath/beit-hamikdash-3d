@@ -178,9 +178,9 @@ const TOUR_STOPS = [
       'שימוש: מושב הסנהדרין הגדולה (71 דיינים)',
       'חשיבות: משם יצאה הוראה לכל ישראל',
     ],
-    camera: { x: 2, y: 8, z: 18 },
-    target: { x: 5, y: 4, z: 14 },
-    markerPos: { x: 5, y: 5, z: 15 },
+    camera: { x: -4, y: 12, z: 28 },
+    target: { x: 5, y: 4, z: 18 },
+    markerPos: { x: 5, y: 5, z: 18 },
   },
   {
     id: 'ulam',
@@ -643,7 +643,7 @@ function buildRoyalStoa(parent) {
   const mat = MAT.marble();
   const colH = 6;
   const z = MT_Z2 - 4;
-  const numCols = 40;
+  const numCols = 41;
   const spacing = (MT_SIZE - 8) / numCols;
 
   for (let row = 0; row < 4; row++) {
@@ -786,10 +786,9 @@ function buildNikanorGate(parent) {
   const gateY = Y_NASHIM;
 
   for (let i = 0; i < 15; i++) {
-    const stepR = 6 - i * 0.15;
-    const stepGeo = new THREE.CylinderGeometry(stepR, stepR, 0.1, 24, 1, false, 0, Math.PI);
+    const stepGeo = new THREE.CylinderGeometry(6, 6, 0.12, 32, 1, false, 0, Math.PI);
     const step = new THREE.Mesh(stepGeo, MAT.marble());
-    step.position.set(gateX + 0.3, gateY + i * 0.1, 0);
+    step.position.set(gateX + 0.3, gateY + i * 0.12, 0);
     step.rotation.y = Math.PI / 2;
     step.receiveShadow = true;
     step.castShadow = true;
@@ -797,7 +796,7 @@ function buildNikanorGate(parent) {
   }
 
   const gateH = 10;
-  const gateW = 4;
+  const gateW = 8;
   const pillarW = 1.5;
   const gateTop = Y_AZARAH;
 
@@ -1278,9 +1277,9 @@ function buildSanctuary(parent) {
   });
 
   const heichalFrontX = ulamFrontX - ulamXD;
-  const heichalZW = 4;
+  const heichalZW = 8;
   const heichalXD = 8;
-  const heichalH = 8;
+  const heichalH = 10;
   const heichalCX = heichalFrontX - heichalXD / 2;
 
   const hFloor = new THREE.Mesh(new THREE.BoxGeometry(heichalXD, 0.4, heichalZW), MAT.marble());
@@ -1434,9 +1433,9 @@ function buildSanctuary(parent) {
   parochetGoldBar.position.set(parochetX - 0.12, Y_ULAM + heichalH - 0.6, 0);
   sanctuary.add(parochetGoldBar);
 
-  const kkZW = 4;
+  const kkZW = 8;
   const kkXD = 4;
-  const kkH = 8;
+  const kkH = 10;
   const kkCX = parochetX - 0.2 - kkXD / 2 - 0.1;
 
   const kkFloor = new THREE.Mesh(new THREE.BoxGeometry(kkXD, 0.4, kkZW), MAT.marble());
@@ -1466,22 +1465,60 @@ function buildSanctuary(parent) {
   kkRoofEdge.position.set(kkCX, Y_ULAM + kkH + 0.85, 0);
   sanctuary.add(kkRoofEdge);
 
+  // Even Shtiyah — Foundation Stone (protruding 3 fingerbreadths)
   const evenShtiyah = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.3, 1.5, 0.2, 12),
+    new THREE.CylinderGeometry(1.2, 1.4, 0.35, 12),
     new THREE.MeshStandardMaterial({ color: 0x9a8a7a, roughness: 0.85, metalness: 0.05 })
   );
-  evenShtiyah.position.set(kkCX, Y_ULAM + 0.3, 0);
+  evenShtiyah.position.set(kkCX, Y_ULAM + 0.38, 0);
   evenShtiyah.castShadow = true;
   evenShtiyah.receiveShadow = true;
   sanctuary.add(evenShtiyah);
 
   const evenRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.4, 0.08, 8, 24),
+    new THREE.TorusGeometry(1.35, 0.08, 8, 24),
     MAT.goldBright()
   );
-  evenRing.position.set(kkCX, Y_ULAM + 0.42, 0);
+  evenRing.position.set(kkCX, Y_ULAM + 0.58, 0);
   evenRing.rotation.x = Math.PI / 2;
   sanctuary.add(evenRing);
+
+  // Aron HaKodesh outline — shown as faint/transparent to indicate the Ark was hidden
+  // (Second Temple had no Ark; we show its historical position as a reverent memorial)
+  const aronMat = new THREE.MeshStandardMaterial({
+    color: 0xc9a84c, roughness: 0.4, metalness: 0.6,
+    transparent: true, opacity: 0.35, side: THREE.DoubleSide,
+  });
+  const aronBody = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.75, 0.75), aronMat);
+  aronBody.position.set(kkCX, Y_ULAM + 1.1, 0);
+  sanctuary.add(aronBody);
+
+  // Kapporet (mercy seat) on top
+  const kapporet = new THREE.Mesh(new THREE.BoxGeometry(1.35, 0.08, 0.85), aronMat);
+  kapporet.position.set(kkCX, Y_ULAM + 1.52, 0);
+  sanctuary.add(kapporet);
+
+  // Two Cherubim — stylized wing shapes flanking the mercy seat
+  [-1, 1].forEach(side => {
+    const cherubBody = new THREE.Mesh(
+      new THREE.SphereGeometry(0.18, 8, 6),
+      new THREE.MeshStandardMaterial({ color: 0xc9a84c, roughness: 0.3, metalness: 0.7, transparent: true, opacity: 0.5 })
+    );
+    cherubBody.position.set(kkCX + side * 0.45, Y_ULAM + 1.8, 0);
+    sanctuary.add(cherubBody);
+
+    // Wings spread inward over the mercy seat
+    const wingGeo = new THREE.BoxGeometry(0.5, 0.05, 0.4);
+    const wingMat = new THREE.MeshStandardMaterial({ color: 0xe8d48b, roughness: 0.3, metalness: 0.8, transparent: true, opacity: 0.45 });
+    const wingInner = new THREE.Mesh(wingGeo, wingMat);
+    wingInner.position.set(kkCX + side * 0.2, Y_ULAM + 2.0, 0);
+    wingInner.rotation.z = side * -0.4;
+    sanctuary.add(wingInner);
+    const wingOuter = new THREE.Mesh(wingGeo, wingMat);
+    wingOuter.position.set(kkCX + side * 0.65, Y_ULAM + 2.0, 0);
+    wingOuter.rotation.z = side * 0.5;
+    sanctuary.add(wingOuter);
+  });
 
   const kkLight = new THREE.PointLight(0xfff8e0, 4.0, 20);
   kkLight.position.set(kkCX, Y_ULAM + 5, 0);
@@ -1564,10 +1601,33 @@ function buildMenorah(parent, x, y, z) {
       branch.position.set(side * i * 0.4, 2.5 + i * 0.25, 0);
       branch.rotation.z = side * 0.35;
       g.add(branch);
-      addFlame(side * i * 0.6, 3.5 + i * 0.15, 0);
+
+      // Knob (כפתור) on branch midpoint
+      const knob = new THREE.Mesh(new THREE.SphereGeometry(0.11, 6, 6), mat);
+      knob.position.set(side * i * 0.3, 2.6 + i * 0.25, 0);
+      g.add(knob);
+
+      // Bowl/cup (גביע) near top of branch
+      const bowl = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.06, 0.12, 8), mat);
+      bowl.position.set(side * i * 0.55, 3.38 + i * 0.13, 0);
+      g.add(bowl);
+
+      // Flower petal (פרח) at top
+      const flower = new THREE.Mesh(new THREE.SphereGeometry(0.08, 6, 4, 0, Math.PI * 2, 0, Math.PI / 2), mat);
+      flower.position.set(side * i * 0.6, 3.47 + i * 0.14, 0);
+      flower.rotation.x = Math.PI;
+      g.add(flower);
+
+      addFlame(side * i * 0.6, 3.55 + i * 0.15, 0);
     }
   }
-  addFlame(0, 3.8, 0);
+  // Knobs on central stem (3 levels per sources)
+  [1.2, 2.0, 2.8].forEach(stemY => {
+    const stemKnob = new THREE.Mesh(new THREE.SphereGeometry(0.13, 6, 6), mat);
+    stemKnob.position.set(0, stemY, 0);
+    g.add(stemKnob);
+  });
+  addFlame(0, 3.9, 0);
 
   const light = new THREE.PointLight(0xffaa33, 4.0, 18);
   light.position.y = 4;
@@ -1683,19 +1743,26 @@ function buildBetHaMoked(parent) {
   floor.position.set(cx, Y_AZARAH + 0.1, cz);
   parent.add(floor);
 
-  const subSize = 2.5;
+  // 4 subchambers at corners: כבשים, לחם הפנים, אבני מזבח, בית טבילה
+  const subNames = ['כבשים', 'לחם הפנים', 'אבני מזבח', 'טבילה'];
+  const subSize = 2.8;
   const subH = 3;
   const subPositions = [
-    [cx - 2, cz + 2],
-    [cx + 2, cz + 2],
-    [cx + 2, cz - 2],
-    [cx - 2, cz - 2],
+    [cx - 2.5, cz + 2.5],
+    [cx + 2.5, cz + 2.5],
+    [cx + 2.5, cz - 2.5],
+    [cx - 2.5, cz - 2.5],
   ];
+  const wt = 0.3;
   subPositions.forEach(([sx, sz]) => {
-    const sub = new THREE.Mesh(new THREE.BoxGeometry(subSize, subH, subSize), stoneWallMaterial(1, 1));
-    sub.position.set(sx, Y_AZARAH + subH / 2, sz);
-    sub.castShadow = true;
-    parent.add(sub);
+    addStoneWall(parent, subSize, subH, wt, sx, Y_AZARAH + subH / 2, sz + subSize / 2, 1, 1);
+    addStoneWall(parent, subSize, subH, wt, sx, Y_AZARAH + subH / 2, sz - subSize / 2, 1, 1);
+    addStoneWall(parent, wt, subH, subSize, sx + subSize / 2, Y_AZARAH + subH / 2, sz, 1, 1);
+    addStoneWall(parent, wt, subH, subSize, sx - subSize / 2, Y_AZARAH + subH / 2, sz, 1, 1);
+    // Stone bench along inner wall for sleeping priests
+    const bench = new THREE.Mesh(new THREE.BoxGeometry(subSize - 0.8, 0.3, 0.5), MAT.limestone());
+    bench.position.set(sx, Y_AZARAH + 0.4, sz - subSize / 2 + 0.4);
+    parent.add(bench);
   });
 
   const innerLight = new THREE.PointLight(0xff8844, 0.8, 12);
@@ -1707,32 +1774,59 @@ function buildBetHaMoked(parent) {
 
 // ─── Lishkat HaGazit — Sanhedrin Chamber ───────────────────
 function buildLishkatHaGazit(parent) {
-  const cx = 5, cz = AZ_Z2 + 2;
-  const w = 8, d = 5, h = 4;
+  const cx = 5, cz = AZ_Z2 + 4;
+  const w = 16, d = 10, h = 6;
 
-  addStoneWall(parent, w, h, 0.5, cx, Y_AZARAH + h / 2, cz + d / 2, 2, 1);
-  addStoneWall(parent, w, h, 0.5, cx, Y_AZARAH + h / 2, cz - d / 2, 2, 1);
-  addStoneWall(parent, 0.5, h, d, cx + w / 2, Y_AZARAH + h / 2, cz, 1, 1);
-  addStoneWall(parent, 0.5, h, d, cx - w / 2, Y_AZARAH + h / 2, cz, 1, 1);
+  addStoneWall(parent, w, h, 0.5, cx, Y_AZARAH + h / 2, cz + d / 2, 3, 2);
+  addStoneWall(parent, w, h, 0.5, cx, Y_AZARAH + h / 2, cz - d / 2, 3, 2);
+  addStoneWall(parent, 0.5, h, d, cx + w / 2, Y_AZARAH + h / 2, cz, 1, 2);
+  addStoneWall(parent, 0.5, h, d, cx - w / 2, Y_AZARAH + h / 2, cz, 1, 2);
 
-  const roof = new THREE.Mesh(new THREE.BoxGeometry(w + 0.5, 0.4, d + 0.5), stoneWallMaterial(2, 1));
-  roof.position.set(cx, Y_AZARAH + h + 0.2, cz);
+  const roof = new THREE.Mesh(new THREE.BoxGeometry(w + 0.6, 0.5, d + 0.6), stoneWallMaterial(3, 2));
+  roof.position.set(cx, Y_AZARAH + h + 0.25, cz);
   roof.castShadow = true;
   parent.add(roof);
 
-  const floor = new THREE.Mesh(new THREE.BoxGeometry(w - 1, 0.15, d - 1), tiledFloorMaterial(2, 1));
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(w - 1, 0.15, d - 1), tiledFloorMaterial(3, 2));
   floor.position.set(cx, Y_AZARAH + 0.1, cz);
   parent.add(floor);
 
-  for (let i = 0; i < 5; i++) {
-    const bench = new THREE.Mesh(
-      new THREE.BoxGeometry(0.8, 0.4, 0.4),
-      MAT.limestone()
-    );
-    const angle = (i / 5) * Math.PI;
-    bench.position.set(cx + Math.cos(angle) * 2.5, Y_AZARAH + 0.3, cz + Math.sin(angle) * 1.5);
-    parent.add(bench);
-  }
+  // 71-seat semicircular Sanhedrin arrangement — 3 tiered rows
+  const benchMat = MAT.limestone();
+  const rows = [
+    { count: 25, radius: 3.5, tier: 0 },
+    { count: 25, radius: 5.0, tier: 1 },
+    { count: 21, radius: 6.2, tier: 2 },
+  ];
+  rows.forEach(({ count, radius, tier }) => {
+    for (let i = 0; i < count; i++) {
+      const angle = (i / (count - 1)) * Math.PI;
+      const bench = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.25, 0.4), benchMat);
+      bench.position.set(
+        cx + Math.cos(angle) * radius,
+        Y_AZARAH + 0.3 + tier * 0.35,
+        cz - 1 + Math.sin(angle) * (d / 2 - 1.5)
+      );
+      bench.rotation.y = -angle;
+      parent.add(bench);
+    }
+  });
+
+  // Central nasi (president) elevated seat
+  const nasiBase = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.5, 0.8), MAT.marble());
+  nasiBase.position.set(cx, Y_AZARAH + 0.25, cz + 1.5);
+  parent.add(nasiBase);
+  const nasiSeat = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.25, 0.4), MAT.goldBright());
+  nasiSeat.position.set(cx, Y_AZARAH + 0.62, cz + 1.5);
+  parent.add(nasiSeat);
+
+  // Sacred/profane boundary line — half the building straddles the azarah wall
+  const boundaryLine = new THREE.Mesh(
+    new THREE.BoxGeometry(w + 0.6, 0.05, 0.08),
+    new THREE.MeshStandardMaterial({ color: 0xcc2222, roughness: 0.6 })
+  );
+  boundaryLine.position.set(cx, Y_AZARAH + 0.15, AZ_Z2);
+  parent.add(boundaryLine);
 }
 
 // ─── Service Chambers ──────────────────────────────────────
@@ -1973,6 +2067,33 @@ function buildPeople(parent) {
     const type = Math.random() > 0.5 ? 'israelM' : 'israelF';
     ppl.add(createPerson(type, x, Y_MOUNT + 0.5, z, Math.random() * Math.PI * 2));
   });
+
+  // ── Carrier kohen: walks slaughter area → altar ramp, carrying korban ──
+  const carrier = createPerson('kohen', -5, Y_KOHANIM, 6, -Math.PI * 0.6);
+
+  // Offering: small red cone held between raised hands
+  const offeringGeo = new THREE.ConeGeometry(0.12, 0.35, 6);
+  const offeringMat = new THREE.MeshStandardMaterial({ color: 0xcc3311, roughness: 0.7, emissive: 0x550000, emissiveIntensity: 0.3 });
+  const offering = new THREE.Mesh(offeringGeo, offeringMat);
+  offering.position.set(0, -0.1, 0.28);  // held out front between hands
+  // Attach to one arm pivot so it moves with the arms
+  carrier.userData.armPivots[0].add(offering);
+
+  carrier.userData.role = 'carrier';
+  // Waypoints: slaughter table → altar ramp base (altarX = 1)
+  carrier.userData.waypoints = [
+    new THREE.Vector3(-5, Y_KOHANIM, 6),
+    new THREE.Vector3(-3, Y_KOHANIM, 3),
+    new THREE.Vector3(0,  Y_KOHANIM, 1),
+    new THREE.Vector3(1,  Y_KOHANIM + 0.5, 0),  // on the ramp
+    new THREE.Vector3(1,  Y_KOHANIM + 0.5, 0),  // pause at altar (same point = hold)
+    new THREE.Vector3(0,  Y_KOHANIM, 1),
+    new THREE.Vector3(-3, Y_KOHANIM, 3),
+    new THREE.Vector3(-5, Y_KOHANIM, 6),
+  ];
+  carrier.userData.pathT  = 0;
+  carrier.userData.pathSpeed = 0.07; // units per second between waypoints
+  ppl.add(carrier);
 
   parent.add(ppl);
 }
@@ -2234,30 +2355,43 @@ function animate() {
         const s = 1 + Math.sin(time * 2 + ri * 2) * 0.3;
         obj.scale.set(s, s, 1);
         obj.material.opacity = 0.25 - ri * 0.06 + Math.sin(time * 3 + ri) * 0.08;
-      } else if (obj.userData.dropIdx !== undefined) {
-        const di = obj.userData.dropIdx;
-        obj.position.y += Math.sin(time * 4 + di * 0.8) * 0.002;
-        obj.material.opacity = 0.4 + Math.sin(time * 5 + di) * 0.3;
-      }
-    }
-
     if (obj.userData.isPerson) {
       const { upper, armPivots, phase, bowDepth, swayAmt, praySpeed, personType } = obj.userData;
       const t = time * praySpeed + phase;
 
-      if (personType === 'child') {
-        // Children wander in small circles and bob their heads
+      if (obj.userData.role === 'carrier') {
+        const wps = obj.userData.waypoints;
+        const totalSegs = wps.length - 1;
+        obj.userData.pathT = (obj.userData.pathT + 0.0003) % 1;
+        const globalT = obj.userData.pathT * totalSegs;
+        const seg = Math.floor(globalT);
+        const segT = globalT - seg;
+        const from = wps[Math.min(seg, totalSegs - 1)];
+        const to   = wps[Math.min(seg + 1, totalSegs)];
+        obj.position.lerpVectors(from, to, segT);
+        const dx = to.x - from.x, dz = to.z - from.z;
+        if (Math.abs(dx) + Math.abs(dz) > 0.01) obj.rotation.y = Math.atan2(dx, dz);
+        const atAltar = seg >= 3 && seg <= 4;
+        const armAngle = atAltar ? -1.1 : -0.55;
+        armPivots[0].rotation.x = armAngle + Math.sin(time * 1.2 + phase) * 0.05;
+        armPivots[1].rotation.x = armAngle + Math.sin(time * 1.2 + phase + 1) * 0.05;
+        armPivots[0].rotation.z =  0.3;
+        armPivots[1].rotation.z = -0.3;
+        upper.rotation.x = atAltar ? 0.15 : 0.06 + Math.sin(time * 2 + phase) * 0.04;
+        upper.rotation.z = Math.sin(time * 2 + phase) * 0.03;
+
+      } else if (personType === 'child') {
         obj.userData.wanderAngle += 0.004;
-        const wanderR = 0.8;
-        obj.position.x = obj.userData.baseX + Math.cos(obj.userData.wanderAngle) * wanderR;
-        obj.position.z = obj.userData.baseZ + Math.sin(obj.userData.wanderAngle) * wanderR;
+        obj.position.x = obj.userData.baseX + Math.cos(obj.userData.wanderAngle) * 0.8;
+        obj.position.z = obj.userData.baseZ + Math.sin(obj.userData.wanderAngle) * 0.8;
         obj.rotation.y = obj.userData.wanderAngle + Math.PI / 2;
         upper.rotation.x = Math.sin(t * 2) * 0.08;
         armPivots[0].rotation.z =  0.2 + Math.sin(t * 1.5) * 0.25;
         armPivots[1].rotation.z = -0.2 - Math.sin(t * 1.5 + 1) * 0.25;
+
       } else if (personType === 'kohen' || personType === 'kohenGadol') {
-        // Priests: deliberate swaying torso, arms held forward in service
         const sway = Math.sin(t * 0.9) * swayAmt;
+        obj.position.x = obj.userData.baseX + Math.sin(t * 1.1) * 0.07;
         obj.rotation.y = obj.userData.baseRotY + Math.sin(t * 0.4) * 0.06;
         upper.rotation.x = 0.08 + Math.sin(t) * bowDepth;
         upper.rotation.z = sway;
@@ -2265,20 +2399,22 @@ function animate() {
         armPivots[1].rotation.x = -0.3 - Math.sin(t - 0.5) * 0.15;
         armPivots[0].rotation.z =  0.15 + sway * 0.5;
         armPivots[1].rotation.z = -0.15 + sway * 0.5;
+
       } else {
-        // Israelites / Levites: full Shemoneh Esrei bow cycle
-        // Bow curve: smooth dip-hold-rise using a shaped sine
         const rawBow = Math.sin(t);
         const bowCurve = rawBow > 0 ? Math.pow(rawBow, 0.6) : rawBow * 0.2;
         upper.rotation.x = bowCurve * bowDepth;
-
-        // Gentle side sway independent of bow
-        upper.rotation.z = Math.sin(t * 0.7 + phase) * swayAmt;
-
-        // Arms rise as the person bows forward (hands extend toward floor)
+        const shuckel = Math.sin(t * 1.3 + phase) * 0.14;
+        upper.rotation.z = shuckel;
+        obj.position.x = obj.userData.baseX + shuckel * 0.18;
         const armLift = bowCurve * 0.45;
         armPivots[0].rotation.x = -armLift;
         armPivots[1].rotation.x = -armLift;
+        armPivots[0].rotation.z =  0.15 + shuckel * 0.4;
+        armPivots[1].rotation.z = -0.15 + shuckel * 0.4;
+        obj.rotation.y = obj.userData.baseRotY + Math.sin(t * 0.3 + phase) * 0.07;
+      }
+    }
         armPivots[0].rotation.z =  0.15 + Math.sin(t * 0.5) * 0.05;
         armPivots[1].rotation.z = -0.15 - Math.sin(t * 0.5) * 0.05;
 
@@ -2333,6 +2469,21 @@ function setupUI() {
     document.getElementById('info-panel').classList.add('hidden');
   });
 
+  const btnMusic = document.getElementById('btn-music');
+  btnMusic.addEventListener('click', () => {
+    if (!musicPlaying) {
+      startMusic();
+      btnMusic.textContent = '♬';
+      btnMusic.style.color = 'var(--gold)';
+      btnMusic.style.background = 'rgba(201,168,76,0.15)';
+    } else {
+      stopMusic();
+      btnMusic.textContent = '♪';
+      btnMusic.style.color = '';
+      btnMusic.style.background = '';
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
       goToStop((currentStop + 1) % TOUR_STOPS.length);
@@ -2357,6 +2508,102 @@ function hideLoading() {
   loader.style.opacity = '0';
   loader.style.transition = 'opacity 0.5s ease';
   setTimeout(() => loader.classList.add('hidden'), 500);
+}
+
+// ─── Temple Music (Web Audio API — no files needed) ─────────
+// Pentatonic scale in D: D2 D3 E3 G3 A3 C4 D4 E4 G4 A4
+const PENTA_FREQS = [73.4, 146.8, 164.8, 196, 220, 261.6, 293.7, 329.6, 392, 440];
+
+let audioCtx = null;
+let musicPlaying = false;
+let masterGain = null;
+const activeOscs = [];
+
+function buildReverb(ctx) {
+  const len = ctx.sampleRate * 3;
+  const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+  for (let c = 0; c < 2; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.5);
+  }
+  const conv = ctx.createConvolver();
+  conv.buffer = buf;
+  return conv;
+}
+
+function startMusic() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(0.18, audioCtx.currentTime + 3);
+
+  const reverb = buildReverb(audioCtx);
+  const reverbGain = audioCtx.createGain();
+  reverbGain.gain.value = 0.55;
+  reverb.connect(reverbGain);
+  reverbGain.connect(masterGain);
+  masterGain.connect(audioCtx.destination);
+
+  // Deep drone — two slightly detuned oscillators for warmth
+  [73.4, 73.6].forEach(freq => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    g.gain.value = 0.35;
+    osc.connect(g); g.connect(reverb); g.connect(masterGain);
+    osc.start();
+    activeOscs.push(osc);
+  });
+
+  // Slow melody — randomly picks pentatonic notes, fades in/out
+  function playMelodyNote() {
+    if (!musicPlaying) return;
+    const freq = PENTA_FREQS[Math.floor(Math.random() * PENTA_FREQS.length)];
+    const dur  = 2.5 + Math.random() * 3;
+    const osc  = audioCtx.createOscillator();
+    const env  = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+    env.gain.setValueAtTime(0, audioCtx.currentTime);
+    env.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 0.6);
+    env.gain.linearRampToValueAtTime(0, audioCtx.currentTime + dur);
+    osc.connect(env); env.connect(reverb); env.connect(masterGain);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur + 0.1);
+    activeOscs.push(osc);
+    setTimeout(playMelodyNote, (1.5 + Math.random() * 2.5) * 1000);
+  }
+
+  // Soft higher harmony
+  function playHarmonyNote() {
+    if (!musicPlaying) return;
+    const freq = PENTA_FREQS[4 + Math.floor(Math.random() * 5)]; // upper register
+    const dur  = 4 + Math.random() * 4;
+    const osc  = audioCtx.createOscillator();
+    const env  = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    env.gain.setValueAtTime(0, audioCtx.currentTime);
+    env.gain.linearRampToValueAtTime(0.07, audioCtx.currentTime + 1.2);
+    env.gain.linearRampToValueAtTime(0, audioCtx.currentTime + dur);
+    osc.connect(env); env.connect(reverb);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur + 0.1);
+    activeOscs.push(osc);
+    setTimeout(playHarmonyNote, (3 + Math.random() * 4) * 1000);
+  }
+
+  musicPlaying = true;
+  setTimeout(playMelodyNote, 500);
+  setTimeout(playHarmonyNote, 2000);
+}
+
+function stopMusic() {
+  if (!masterGain) return;
+  masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
+  musicPlaying = false;
 }
 
 // ─── Boot ───────────────────────────────────────────────────
